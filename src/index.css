@@ -1,0 +1,302 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ============================================
+   PIEMR VIRTUAL LAB — DESIGN SYSTEM
+   Colors extracted from piemr.edu.in
+   Navy Blue + Maroon + Gold palette
+   ============================================ */
+:root {
+  /* PIEMR Brand Colors */
+  --piemr-navy:      #003073;   /* Primary navy from logo */
+  --piemr-navy-deep: #001a47;   /* Deeper navy for backgrounds */
+  --piemr-maroon:    #9B1C1C;   /* Maroon accent */
+  --piemr-gold:      #D4A017;   /* Institutional gold */
+  --piemr-gold-light:#F5C842;   /* Lighter gold for highlights */
+
+  /* Background Layers */
+  --bg-primary:   #010d1f;          /* Very deep navy-black */
+  --bg-secondary: #021330;          /* Darker navy */
+  --bg-tertiary:  #051e40;          /* Medium navy */
+  --bg-card:      #0a2a52;          /* Card background */
+  --bg-glass:     rgba(3, 20, 50, 0.75);  /* Glassmorphism */
+
+  /* Text */
+  --text-primary:   #f0f4f8;
+  --text-secondary: #94aec8;
+  --text-muted:     #5c7a9e;
+
+  /* Accent System (PIEMR Palette) */
+  --accent-primary:    #1a5cbe;   /* PIEMR Blue */
+  --accent-secondary:  #2a78e8;   /* Lighter navy-blue */
+  --accent-tertiary:   #D4A017;   /* PIEMR Gold */
+  --accent-maroon:     #9B1C1C;   /* PIEMR Maroon */
+
+  /* Semantic Colors */
+  --success: #0f9e6e;
+  --warning: #D4A017;
+  --danger:  #c0392b;
+  --info:    #2a78e8;
+
+  /* Borders */
+  --border-light: rgba(255, 255, 255, 0.08);
+  --border-glow:  rgba(26, 92, 190, 0.45);
+  --border-gold:  rgba(212, 160, 23, 0.4);
+
+  /* Typography */
+  --font-primary: 'Inter', sans-serif;
+  --font-heading: 'Outfit', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* Shadows */
+  --shadow-glow:   0 0 24px rgba(26, 92, 190, 0.35);
+  --shadow-gold:   0 0 20px rgba(212, 160, 23, 0.25);
+  --shadow-glass:  0 8px 40px rgba(0, 0, 0, 0.5);
+  --shadow-card:   0 4px 20px rgba(0, 0, 0, 0.3);
+
+  /* Border Radius */
+  --border-radius-xs:  4px;
+  --border-radius-sm:  8px;
+  --border-radius-md:  12px;
+  --border-radius-lg:  20px;
+  --border-radius-xl:  28px;
+  --border-radius-pill: 9999px;
+
+  /* Transitions */
+  --transition-fast:   0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow:   0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--bg-primary);
+  background-image:
+    radial-gradient(ellipse at 15% 50%, rgba(26, 92, 190, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 20%, rgba(155, 28, 28, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(212, 160, 23, 0.04) 0%, transparent 50%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a, button {
+  cursor: pointer;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+h1 { font-size: clamp(2rem, 4vw, 2.8rem); }
+h2 { font-size: clamp(1.4rem, 3vw, 2rem); }
+h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
+
+p { line-height: 1.75; color: var(--text-secondary); }
+
+code, pre {
+  font-family: var(--font-mono);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Glassmorphism panels */
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glass);
+}
+
+.glass-panel-md {
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+/* Gradient text — PIEMR blue to gold */
+.text-gradient {
+  background: linear-gradient(135deg, #4a90d9 0%, var(--accent-tertiary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card hover lift */
+.card-lift {
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Glowing border on focus */
+.glow-border {
+  border: 1px solid var(--border-glow);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--border-radius-pill);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.badge-blue   { background: rgba(26, 92, 190, 0.2); color: #60a5fa; border: 1px solid rgba(26,92,190,0.3); }
+.badge-gold   { background: rgba(212, 160, 23, 0.15); color: #f5c842; border: 1px solid rgba(212,160,23,0.3); }
+.badge-maroon { background: rgba(155, 28, 28, 0.2); color: #fc8080; border: 1px solid rgba(155,28,28,0.3); }
+.badge-green  { background: rgba(15, 158, 110, 0.15); color: #34d399; border: 1px solid rgba(15,158,110,0.3); }
+
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(26, 92, 190, 0.2);
+}
+
+select option {
+  background: var(--bg-secondary);
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  padding: 0.9rem 1.1rem;
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  border-bottom: 2px solid var(--border-light);
+  background: rgba(255,255,255,0.03);
+}
+
+td {
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+tr:hover td {
+  background: rgba(26, 92, 190, 0.05);
+  color: var(--text-primary);
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb {
+  background: #1a3a6e;
+  border-radius: var(--border-radius-pill);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -500px 0; }
+  100% { background-position: 500px 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 10px rgba(26, 92, 190, 0.3); }
+  50%       { box-shadow: 0 0 25px rgba(26, 92, 190, 0.7); }
+}
+
+@keyframes borderPulse {
+  0%, 100% { border-color: var(--border-glow); }
+  50%       { border-color: var(--accent-tertiary); }
+}
+
+.animate-fade-in-up { animation: fadeInUp 0.6s ease forwards; }
+.animate-fade-in    { animation: fadeIn 0.5s ease forwards; }
+.animate-pulse-glow { animation: pulse-glow 2.5s infinite; }

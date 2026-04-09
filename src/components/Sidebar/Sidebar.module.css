@@ -1,0 +1,202 @@
+/* ============================================
+   SIDEBAR — PIEMR Professional
+   ============================================ */
+
+/* Mobile Header */
+.mobileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1.25rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-glow);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.mobileLogo {
+  height: 36px;
+  width: auto;
+}
+
+.menuBtn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--border-radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.menuBtn:hover {
+  background: rgba(26, 92, 190, 0.2);
+  border-color: var(--accent-primary);
+}
+
+/* Sidebar Container */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 260px;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;
+  flex-shrink: 0;
+  z-index: 100;
+  transition: left var(--transition-normal);
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-glow);
+  overflow: hidden;
+}
+
+.sidebar.open {
+  left: 0;
+  box-shadow: 4px 0 30px rgba(0,0,0,0.5);
+}
+
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+  .mobileHeader {
+    display: none;
+  }
+
+  .sidebar {
+    position: static;
+    left: 0;
+    height: calc(100vh - 2rem);
+    margin: 1rem 0 1rem 1rem;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--border-glow);
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-glass);
+  }
+
+  .overlay {
+    display: none;
+  }
+}
+
+/* Logo Area */
+.logoContainer {
+  padding: 1.5rem 1.25rem 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(0, 48, 115, 0.2);
+}
+
+.logo {
+  max-width: 110px;
+  max-height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(212, 160, 23, 0.3));
+}
+
+.logoTitle {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* Nav section label */
+.navSection {
+  padding: 1rem 1.25rem 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Nav */
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 0.75rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.7rem 1rem;
+  border-radius: var(--border-radius-md);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.navItem::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--accent-primary);
+  border-radius: 0 3px 3px 0;
+  transform: scaleY(0);
+  transition: transform var(--transition-fast);
+}
+
+.navItem:hover {
+  background: rgba(26, 92, 190, 0.1);
+  color: var(--text-primary);
+  transform: translateX(2px);
+}
+
+.navItem:hover::before {
+  transform: scaleY(0.6);
+}
+
+.navItem.active {
+  background: linear-gradient(135deg, rgba(26, 92, 190, 0.25), rgba(26, 92, 190, 0.1));
+  color: #60a5fa;
+  border: 1px solid rgba(26, 92, 190, 0.3);
+  box-shadow: 0 2px 12px rgba(26, 92, 190, 0.2);
+}
+
+.navItem.active::before {
+  transform: scaleY(1);
+  background: var(--accent-tertiary);
+}
+
+/* Sidebar Footer */
+.sidebarFooter {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border-light);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+}
