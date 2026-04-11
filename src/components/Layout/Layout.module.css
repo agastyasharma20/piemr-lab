@@ -12,39 +12,33 @@
   }
 }
 
-.mainContent {
+/* Wrapper for the entire right-side area */
+.contentWrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: auto;
-  overflow-y: auto;
+  height: 100vh;
+  overflow: hidden;
   position: relative;
-  /* subtle right-side background gradient */
-  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  background: var(--bg-primary);
+}
+
+/* The scrollable area for pages */
+.mainArea {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem;
 }
 
 @media (min-width: 768px) {
-  .mainContent {
-    height: 100vh;
+  .mainArea {
+    padding: 2.5rem 2rem;
   }
 }
 
-.pageContainer {
-  padding: 2.5rem 1.5rem 2rem;
-  flex: 1 0 auto;
-  width: 100%;
-  max-width: 1280px;
+/* Animation for page entrance */
+.mainArea > * {
+  max-width: 1400px;
   margin: 0 auto;
-}
-
-@media (min-width: 1024px) {
-  .pageContainer {
-    padding: 3rem 2.5rem 2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .pageContainer {
-    padding: 1.5rem 1rem;
-  }
 }

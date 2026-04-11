@@ -21,23 +21,19 @@ const Sidebar = () => {
     <>
       {/* Mobile Top Bar */}
       <div className={styles.mobileHeader}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+        <div className={styles.mobileBranding}>
           <img
             src="https://accsoft.piemr.edu.in/accsoft_piemr/Upload/Inst_Logo_6632bdd9196946f7b839740c8b2ce366_piemr_logo.png"
             alt="PIEMR"
             className={styles.mobileLogo}
           />
-          <div>
-            <h2 style={{ margin: 0, fontSize: '1rem', fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
-              PIEMR Virtual Lab
-            </h2>
-            <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-              OS Learning Platform
-            </p>
+          <div className={styles.mobileHeaderText}>
+            <h2 className={styles.mobileTitle}>PIEMR Virtual Lab</h2>
+            <p className={styles.mobileSubtitle}>OS Learning Platform</p>
           </div>
         </div>
         <button className={styles.menuBtn} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
-          {isOpen ? <X size={20} /> : <Menu size={20} />}
+          {isOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 

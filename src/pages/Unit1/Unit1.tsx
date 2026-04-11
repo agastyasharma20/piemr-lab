@@ -2,10 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 30, scale: 0.98 },
   visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { delay: i * 0.1, duration: 0.5, ease: "easeInOut" } as any
+    opacity: 1, y: 0, scale: 1,
+    transition: { delay: i * 0.1, duration: 0.6, ease: [0.215, 0.61, 0.355, 1] } as any
   })
 };
 
@@ -91,18 +91,32 @@ const Unit1 = () => {
             { title: 'Memory Management', color: '#D4A017', icon: '🧠', text: 'Loads programs into RAM, translates logical addresses to physical ones, protects one process\'s memory space from being corrupted by another, and handles page swapping.' },
             { title: 'File & Disk I/O', color: '#0f9e6e', icon: '💾', text: 'Abstracts raw disk tracks and sectors into a logical File System. Manages I/O device drivers, buffers cache-frequent reads, and schedules disk head movement.' },
             { title: 'Security & Protection', color: '#9B1C1C', icon: '🛡️', text: 'Enforces access control via permissions, user IDs, and system call sandboxing. Prevents user-mode programs from executing privileged kernel instructions directly.' },
-          ].map(({ title, color, icon, text }) => (
+          ].map(({ title, color, icon, text }, index) => (
             <motion.div
               key={title}
-              whileHover={{ y: -4, borderColor: color }}
+              custom={index + 2}
+              variants={fadeUp}
+              whileHover={{ 
+                y: -8, 
+                borderColor: color,
+                boxShadow: `0 12px 30px -10px ${color}40`,
+                backgroundColor: 'rgba(255,255,255,0.03)'
+              }}
+              whileTap={{ scale: 0.98 }}
               className="glass-panel-md"
-              style={{ padding: '1.4rem', borderTop: `3px solid ${color}`, transition: 'all 0.3s' }}
+              style={{ padding: '1.6rem', borderTop: `4px solid ${color}`, cursor: 'pointer' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.6rem' }}>
-                <span style={{ fontSize: '1.4rem' }}>{icon}</span>
-                <h3 style={{ color, fontSize: '1rem', margin: 0 }}>{title}</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.8rem' }}>
+                <div style={{ 
+                  width: '40px', height: '40px', borderRadius: '10px', 
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: `${color}15`, border: `1px solid ${color}30`
+                }}>
+                  <span style={{ fontSize: '1.2rem' }}>{icon}</span>
+                </div>
+                <h3 style={{ color, fontSize: '1.05rem', margin: 0, fontWeight: 700 }}>{title}</h3>
               </div>
-              <p style={{ lineHeight: 1.65, color: 'var(--text-secondary)', fontSize: '0.93rem', margin: 0 }}>{text}</p>
+              <p style={{ lineHeight: 1.7, color: 'var(--text-secondary)', fontSize: '0.92rem', margin: 0 }}>{text}</p>
             </motion.div>
           ))}
         </div>

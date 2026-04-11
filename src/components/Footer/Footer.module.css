@@ -2,11 +2,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1.1rem 2rem;
-  margin-top: auto;
+  padding: 0.85rem 2rem;
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--border-glow);
-  background: linear-gradient(to right, var(--bg-secondary), var(--bg-tertiary), var(--bg-secondary));
   flex-shrink: 0;
+  z-index: 10;
 }
 
 .footerContent {

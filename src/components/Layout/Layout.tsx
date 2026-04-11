@@ -7,8 +7,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className={styles.layout}>
       <Sidebar />
-      <div className={styles.mainContent}>
-        <main className={styles.pageContainer}>
+      <div className={styles.contentWrapper}>
+        <main className={styles.mainArea}>
           {children}
         </main>
         <Footer />
