@@ -61,7 +61,7 @@ const Unit3 = () => {
       {/* Header */}
       <motion.header className={styles.header} custom={0} variants={fadeUp}>
         <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
-          <span className="badge badge-blue">Unit 3</span>
+
           <span className="badge badge-gold">CPU Scheduling</span>
           <span className="badge badge-maroon">Memory Management</span>
         </div>

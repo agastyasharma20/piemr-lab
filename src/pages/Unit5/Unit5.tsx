@@ -43,7 +43,7 @@ const Unit5 = () => {
         }}
       >
         <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
-          <span className="badge badge-blue">Unit 5</span>
+
         </div>
         <h1 className="text-gradient">Advanced Operating Systems</h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', margin: '0.5rem 0 0', maxWidth: '650px' }}>

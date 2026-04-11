@@ -20,7 +20,7 @@ const Unit2 = () => {
       {/* ---- Page Header ---- */}
       <motion.header className={styles.header} custom={0} variants={fadeUp}>
         <div className={styles.headerMeta}>
-          <span className="badge badge-blue">Unit 2</span>
+
           <span className="badge badge-gold">Interactive Lab</span>
         </div>
         <h1 className="text-gradient" style={{ marginTop: '0.75rem' }}>

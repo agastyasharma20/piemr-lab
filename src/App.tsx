@@ -10,20 +10,48 @@ import Developer from './pages/Developer/Developer';
 import Experiments from './pages/Experiments/Experiments';
 import ExperimentDetails from './pages/Experiments/ExperimentDetails';
 
+// COA Modules
+import COAUnit1 from './pages/COA/Unit1';
+import COAUnit2 from './pages/COA/Unit2';
+import COAUnit3 from './pages/COA/Unit3';
+import COAUnit4 from './pages/COA/Unit4';
+import COAUnit5 from './pages/COA/Unit5';
+import COAExperiments from './pages/COA/Experiments';
+import COAExperimentDetails from './pages/COA/COAExperimentDetails';
+
+// Dashboards
+import OSDashboard from './pages/Dashboard/OSDashboard';
+import COADashboard from './pages/Dashboard/COADashboard';
+
 function App() {
   return (
     <Router>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/unit-1" element={<Unit1 />} />
-          <Route path="/unit-2" element={<Unit2 />} />
-          <Route path="/unit-3" element={<Unit3 />} />
-          <Route path="/unit-4" element={<Unit4 />} />
-          <Route path="/unit-5" element={<Unit5 />} />
-          <Route path="/developer" element={<Developer />} />
-          <Route path="/experiments" element={<Experiments />} />
-          <Route path="/experiments/:id" element={<ExperimentDetails />} />
+          
+          {/* OS Module Routes */}
+          <Route path="/os" element={<OSDashboard />} />
+          <Route path="/os/intro" element={<Unit1 />} />
+          <Route path="/os/disk-scheduling" element={<Unit2 />} />
+          <Route path="/os/cpu-memory" element={<Unit3 />} />
+          <Route path="/os/concurrency" element={<Unit4 />} />
+          <Route path="/os/advanced-os" element={<Unit5 />} />
+          <Route path="/os/experiments/:id" element={<ExperimentDetails />} />
+          <Route path="/os/experiments" element={<Experiments />} />
+
+          {/* COA Module Routes */}
+          <Route path="/coa" element={<COADashboard />} />
+          <Route path="/coa/basic-structure" element={<COAUnit1 />} />
+          <Route path="/coa/computer-arithmetic" element={<COAUnit2 />} />
+          <Route path="/coa/io-organization" element={<COAUnit3 />} />
+          <Route path="/coa/memory-organization" element={<COAUnit4 />} />
+          <Route path="/coa/multiprocessors" element={<COAUnit5 />} />
+          <Route path="/coa/experiments" element={<COAExperiments />} />
+          <Route path="/coa/experiments/:id" element={<COAExperimentDetails />} />
+
+          <Route path="/os/developer" element={<Developer />} />
+          <Route path="/coa/developer" element={<Developer />} />
         </Routes>
       </Layout>
     </Router>

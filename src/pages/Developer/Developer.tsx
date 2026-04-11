@@ -1,7 +1,11 @@
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import styles from './Developer.module.css';
 
 const Developer = () => {
+  const location = useLocation();
+  const isCOA = location.pathname.startsWith('/coa');
+
   return (
     <motion.div 
       className={styles.container}
@@ -53,38 +57,75 @@ const Developer = () => {
           </div>
         </motion.div>
 
-        {/* Mentor Card */}
-        <motion.div 
-          className={`glass-panel ${styles.profileCard}`}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          <div className={`${styles.avatarContainer}`} style={{background: 'linear-gradient(135deg, var(--warning), var(--accent-tertiary))'}}>
-            <img src="https://media.licdn.com/dms/image/v2/D4D03AQGvFDOEX6xhsw/profile-displayphoto-crop_800_800/B4DZngZz15IgAI-/0/1760406490882?e=1777507200&v=beta&t=wNUR_wrH4pKP2KYeUpocR08a7lS70EU-oPIlhkYjPuo" alt="Atul Barve" className={styles.avatar} />
-          </div>
-          
-          <div>
-            <h2 style={{fontSize: '1.8rem', color: 'var(--text-primary)'}}>Mr. Atul Barve Sir</h2>
-          </div>
-          <span className={`${styles.roleBadge} ${styles.mentorBadge}`}>Project Mentor</span>
-
-          <div className={styles.detailsGrid}>
-            <div className={styles.detailItem}>
-              <span className={styles.label}>Institution</span>
-              <span className={styles.value} style={{color: 'var(--text-primary)'}}>
-                PIEMR
-              </span>
+        {/* Mentor Cards (Adaptive based on jurisdiction) */}
+        {!isCOA ? (
+          <motion.div 
+            className={`glass-panel ${styles.profileCard}`}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <div className={`${styles.avatarContainer}`} style={{background: 'linear-gradient(135deg, var(--warning), var(--accent-tertiary))'}}>
+              <img src="https://media.licdn.com/dms/image/v2/D4D03AQGvFDOEX6xhsw/profile-displayphoto-crop_800_800/B4DZngZz15IgAI-/0/1760406490882?e=1777507200&v=beta&t=wNUR_wrH4pKP2KYeUpocR08a7lS70EU-oPIlhkYjPuo" alt="Atul Barve" className={styles.avatar} />
             </div>
-
-            <div className={styles.detailItem}>
-              <span className={styles.label}>Guidance</span>
-              <span className={styles.value} style={{color: 'var(--text-secondary)'}}>
-                Provided expert supervision and curriculum mapping for the OS Virtual Lab.
-              </span>
+            
+            <div>
+              <h2 style={{fontSize: '1.8rem', color: 'var(--text-primary)'}}>Mr. Atul Barve Sir</h2>
             </div>
-          </div>
-        </motion.div>
+            <span className={`${styles.roleBadge} ${styles.mentorBadge}`}>Project Mentor</span>
+
+            <div className={styles.detailsGrid}>
+              <div className={styles.detailItem}>
+                <span className={styles.label}>Institution</span>
+                <span className={styles.value} style={{color: 'var(--text-primary)'}}>
+                  PIEMR
+                </span>
+              </div>
+
+              <div className={styles.detailItem}>
+                <span className={styles.label}>Guidance</span>
+                <span className={styles.value} style={{color: 'var(--text-secondary)'}}>
+                  Provided expert supervision and curriculum mapping for the OS Virtual Lab.
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div 
+            className={`glass-panel ${styles.profileCard}`}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <div className={`${styles.avatarContainer}`} style={{background: 'linear-gradient(135deg, var(--accent-primary), var(--info))'}}>
+               {/* Placeholder profile avatar until image is provided */}
+              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '3rem', fontWeight: 'bold' }}>
+                DJ
+              </div>
+            </div>
+            
+            <div>
+              <h2 style={{fontSize: '1.8rem', color: 'var(--text-primary)'}}>Dr. Dinesh C Jain</h2>
+            </div>
+            <span className={`${styles.roleBadge} ${styles.mentorBadge}`} style={{ background: 'rgba(42, 120, 232, 0.15)', color: 'var(--info)', border: '1px solid var(--info)' }}>Project Mentor & Guide</span>
+
+            <div className={styles.detailsGrid}>
+              <div className={styles.detailItem}>
+                <span className={styles.label}>Institution</span>
+                <span className={styles.value} style={{color: 'var(--text-primary)'}}>
+                  PIEMR
+                </span>
+              </div>
+
+              <div className={styles.detailItem}>
+                <span className={styles.label}>Guidance</span>
+                <span className={styles.value} style={{color: 'var(--text-secondary)'}}>
+                  Expert guidance shaping the core computer architecture and operating system simulators.
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
       </div>
 

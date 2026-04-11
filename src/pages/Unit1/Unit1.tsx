@@ -39,7 +39,7 @@ const Unit1 = () => {
       {/* Header */}
       <motion.header style={headerStyle} custom={0} variants={fadeUp}>
         <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
-          <span className="badge badge-blue">Unit 1</span>
+
           <span className="badge badge-gold">Foundation</span>
         </div>
         <h1 className="text-gradient">Introduction to Operating Systems</h1>

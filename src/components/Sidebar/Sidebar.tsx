@@ -1,21 +1,37 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Home, HardDrive, Cpu, Network, BookOpen, User, Menu, X, GraduationCap } from 'lucide-react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { Home, HardDrive, Cpu, Network, BookOpen, User, Menu, X, GraduationCap, TerminalSquare, Zap } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
-const navItems = [
-  { path: '/', label: 'Dashboard', icon: Home, section: null },
-  { path: '/experiments', label: 'Laboratory Experiments', icon: GraduationCap, section: 'Lab' },
-  { path: '/unit-1', label: 'Unit 1: Intro to OS', icon: BookOpen, section: 'Syllabus' },
-  { path: '/unit-2', label: 'Unit 2: Disk Scheduling', icon: HardDrive, section: null },
-  { path: '/unit-3', label: 'Unit 3: CPU & Memory', icon: Cpu, section: null },
-  { path: '/unit-4', label: 'Unit 4: Concurrency', icon: Network, section: null },
-  { path: '/unit-5', label: 'Unit 5: Advanced OS', icon: BookOpen, section: null },
-  { path: '/developer', label: 'About', icon: User, section: 'Info' },
+const osNavItems = [
+  { path: '/os', label: 'OS Dashboard', icon: Home, section: null },
+  { path: '/os/intro', label: 'Intro to OS', icon: BookOpen, section: 'Syllabus' },
+  { path: '/os/disk-scheduling', label: 'Disk Scheduling', icon: HardDrive, section: null },
+  { path: '/os/cpu-memory', label: 'CPU & Memory', icon: Cpu, section: null },
+  { path: '/os/concurrency', label: 'Concurrency', icon: Network, section: null },
+  { path: '/os/advanced-os', label: 'Advanced Concepts', icon: BookOpen, section: null },
+  { path: '/os/experiments', label: 'Interactive Simulations', icon: TerminalSquare, section: 'Lab' },
+  { path: '/os/developer', label: 'About & Mentors', icon: User, section: 'Info' },
+];
+
+const coaNavItems = [
+  { path: '/coa', label: 'COA Dashboard', icon: Home, section: null },
+  { path: '/coa/basic-structure', label: 'Basic Structure', icon: BookOpen, section: 'Syllabus' },
+  { path: '/coa/computer-arithmetic', label: 'Computer Arithmetic', icon: Cpu, section: null },
+  { path: '/coa/io-organization', label: 'I/O Organization', icon: HardDrive, section: null },
+  { path: '/coa/memory-organization', label: 'Memory Organization', icon: BookOpen, section: null },
+  { path: '/coa/multiprocessors', label: 'Multiprocessors', icon: Network, section: null },
+  { path: '/coa/experiments', label: 'Logic & Assembly Labs', icon: Zap, section: 'Lab' },
+  { path: '/coa/developer', label: 'About & Mentors', icon: User, section: 'Info' },
 ];
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const isCOA = location.pathname.startsWith('/coa');
+  const activeNavItems = isCOA ? coaNavItems : osNavItems;
+  const moduleTitle = isCOA ? 'COA Laboratory' : 'OS Laboratory';
 
   return (
     <>
@@ -48,15 +64,16 @@ const Sidebar = () => {
               className={styles.logo}
             />
           </a>
-          <div className={styles.logoTitle}>Virtual OS Laboratory</div>
+          <div className={styles.logoTitle}>PIEMR Virtual Lab</div>
           <div style={{
             display: 'flex', alignItems: 'center', gap: '6px',
             fontSize: '0.72rem', color: 'var(--accent-tertiary)',
             background: 'rgba(212,160,23,0.12)', padding: '3px 10px',
-            borderRadius: '20px', border: '1px solid rgba(212,160,23,0.25)'
+            borderRadius: '20px', border: '1px solid rgba(212,160,23,0.25)',
+            marginTop: '4px'
           }}>
             <GraduationCap size={12} />
-            <span>PIEMR, Indore</span>
+            <span>{moduleTitle}</span>
           </div>
         </div>
 
@@ -64,7 +81,7 @@ const Sidebar = () => {
         <nav className={styles.nav}>
           {(() => {
             let lastSection: string | null = undefined as any;
-            return navItems.map((item) => {
+            return activeNavItems.map((item) => {
               const Icon = item.icon;
               const showSection = item.section !== lastSection;
               lastSection = item.section;
