@@ -40,7 +40,7 @@ const ExperimentDetails = () => {
     >
       {/* HEADER NAVIGATION */}
       <div className={styles.detailHeader}>
-        <button onClick={() => navigate('/experiments')} className={styles.backBtn}>
+        <button onClick={() => navigate('/os/experiments')} className={styles.backBtn}>
           <ArrowLeft size={18} />
           <span>Back to Labs</span>
         </button>
@@ -51,7 +51,7 @@ const ExperimentDetails = () => {
         <div className={styles.navArrows}>
           <button 
             disabled={!prevExp} 
-            onClick={() => navigate(`/experiments/${prevExp?.id}`)}
+            onClick={() => navigate(`/os/experiments/${prevExp?.id}`)}
             className={styles.iconCircle}
             style={{ opacity: prevExp ? 1 : 0.3, cursor: prevExp ? 'pointer' : 'not-allowed' }}
           >
@@ -59,7 +59,7 @@ const ExperimentDetails = () => {
           </button>
           <button 
             disabled={!nextExp} 
-            onClick={() => navigate(`/experiments/${nextExp?.id}`)}
+            onClick={() => navigate(`/os/experiments/${nextExp?.id}`)}
             className={styles.iconCircle}
             style={{ opacity: nextExp ? 1 : 0.3, cursor: nextExp ? 'pointer' : 'not-allowed' }}
           >

@@ -60,7 +60,7 @@ const Experiments = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05 }}
             className={styles.card}
-            onClick={() => navigate(`/experiments/${exp.id}`)}
+            onClick={() => navigate(`/os/experiments/${exp.id}`)}
             whileHover={{ y: -5, scale: 1.02 }}
           >
             <div className={styles.cardHeader}>
