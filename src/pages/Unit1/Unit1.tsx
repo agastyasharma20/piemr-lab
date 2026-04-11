@@ -5,7 +5,7 @@ const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.1, duration: 0.5, ease: [0.4, 0, 0.2, 1] }
+    transition: { delay: i * 0.1, duration: 0.5, ease: "easeInOut" } as any
   })
 };
 
@@ -140,8 +140,41 @@ const Unit1 = () => {
         </div>
       </motion.div>
 
-      {/* OS Architecture Comparison */}
+      {/* Mathematical Foundation */}
       <motion.div custom={4} variants={fadeUp} style={{
+        background: 'rgba(212,160,23,0.05)',
+        padding: '2rem',
+        borderRadius: 'var(--border-radius-xl)',
+        border: '1px solid var(--border-gold)',
+      }}>
+        <h2 style={{ ...sectionTitleStyle, color: 'var(--accent-tertiary)' }}>
+          <span style={{ width: 4, height: '1.2em', background: 'var(--accent-tertiary)', borderRadius: 4, display: 'inline-block' }} />
+          Mathematical Foundation: OS Performance
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', marginTop: '1rem' }}>
+          <div>
+            <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>1. System Throughput ($T$)</h4>
+            <div style={{ background: 'var(--bg-secondary)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border-light)', textAlign: 'center' }}>
+              <code style={{ fontSize: '1.2rem', color: 'var(--accent-tertiary)' }}>T = N / t</code>
+            </div>
+            <p style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+              Where $N$ is the number of processes completed and $t$ is the total observation time.
+            </p>
+          </div>
+          <div>
+            <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>2. CPU Utilization ($U$)</h4>
+            <div style={{ background: 'var(--bg-secondary)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border-light)', textAlign: 'center' }}>
+              <code style={{ fontSize: '1.2rem', color: 'var(--accent-tertiary)' }}>{'U = (T_busy / T_total) * 100'}</code>
+            </div>
+            <p style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+              The percentage of time the CPU is actively executing instructions.
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* OS Architecture Comparison */}
+      <motion.div custom={5} variants={fadeUp} style={{
         background: 'var(--bg-card)',
         padding: '2rem',
         borderRadius: 'var(--border-radius-xl)',

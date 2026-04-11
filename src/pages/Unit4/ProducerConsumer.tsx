@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import styles from './Unit4.module.css';
 
 const BUFFER_SIZE = 5;

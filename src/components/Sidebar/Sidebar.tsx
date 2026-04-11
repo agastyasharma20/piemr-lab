@@ -5,6 +5,7 @@ import styles from './Sidebar.module.css';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: Home, section: null },
+  { path: '/experiments', label: 'Laboratory Experiments', icon: GraduationCap, section: 'Lab' },
   { path: '/unit-1', label: 'Unit 1: Intro to OS', icon: BookOpen, section: 'Syllabus' },
   { path: '/unit-2', label: 'Unit 2: Disk Scheduling', icon: HardDrive, section: null },
   { path: '/unit-3', label: 'Unit 3: CPU & Memory', icon: Cpu, section: null },

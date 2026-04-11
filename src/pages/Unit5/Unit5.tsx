@@ -5,7 +5,7 @@ const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.1, duration: 0.5, ease: [0.4, 0, 0.2, 1] }
+    transition: { delay: i * 0.1, duration: 0.5, ease: "easeInOut" } as any
   })
 };
 
@@ -44,7 +44,6 @@ const Unit5 = () => {
       >
         <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
           <span className="badge badge-blue">Unit 5</span>
-          <span className="badge badge-maroon">Advanced OS</span>
         </div>
         <h1 className="text-gradient">Advanced Operating Systems</h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', margin: '0.5rem 0 0', maxWidth: '650px' }}>
@@ -174,6 +173,38 @@ const Unit5 = () => {
             enterprise desktop, Active Directory environments, and gaming workloads due to superior driver compatibility.
           </p>
         </motion.div>
+      </motion.div>
+
+      {/* Mathematical Foundation: Distributed Performance */}
+      <motion.div custom={4} variants={fadeUp} style={{
+        background: 'rgba(26,92,190,0.05)',
+        padding: '2rem',
+        borderRadius: 'var(--border-radius-xl)',
+        border: '1px solid var(--border-glow)',
+      }}>
+        <h2 style={{ ...sectionTitleStyle, color: 'var(--accent-primary)' }}>
+          <Accent /> Mathematical Foundation: Scalability & Reliability
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginTop: '1rem' }}>
+          <div>
+            <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>1. Amdahl's Law (Speedup $S$)</h4>
+            <div style={{ background: 'var(--bg-secondary)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border-light)', textAlign: 'center' }}>
+              <code style={{ fontSize: '1.2rem', color: 'var(--accent-primary)' }}>S = 1 / [(1-P) + (P/N)]</code>
+            </div>
+            <p style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+              Where $P$ is the parallel fraction and $N$ is the number of processors. Measures theoretical speedup.
+            </p>
+          </div>
+          <div>
+            <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>2. System Reliability (R<sub>sys</sub>)</h4>
+            <div style={{ background: 'var(--bg-secondary)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border-light)', textAlign: 'center' }}>
+              <code style={{ fontSize: '1.2rem', color: 'var(--accent-primary)' }}>{'R_sys = 1 - (1 - R)^N'}</code>
+            </div>
+            <p style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+              Probability that a system with $N$ redundant nodes (each with reliability $R$) stays operational.
+            </p>
+          </div>
+        </div>
       </motion.div>
 
     </motion.div>

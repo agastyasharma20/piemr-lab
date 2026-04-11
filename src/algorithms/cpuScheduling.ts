@@ -110,7 +110,6 @@ export const srtfPreemptive = (processes: Process[]): CPUSchedulingResult => {
   const remainingTime = Object.fromEntries(processes.map(p => [p.id, p.burstTime]));
   const completionTimes: Record<string, number> = {};
   const gantt: CPUStep[] = [];
-  let currentProcessId: string | 'IDLE' = 'IDLE';
 
   while (completed < processes.length) {
     const available = processes.filter(p => p.arrivalTime <= currentTime && remainingTime[p.id] > 0);

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text } from '@react-three/drei';
 import * as THREE from 'three';
@@ -47,7 +47,7 @@ const ReadWriteHead = ({ targetTrack, diskSize }: { targetTrack: number; diskSiz
   const radius = INNER_RADIUS + (targetTrack / (diskSize > 0 ? diskSize : 1)) * (OUTER_RADIUS - INNER_RADIUS);
 
   // Smoothly animate to target position
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     if (headRef.current) {
       const targetX = radius;
       headRef.current.position.x = THREE.MathUtils.lerp(headRef.current.position.x, targetX, delta * 5);

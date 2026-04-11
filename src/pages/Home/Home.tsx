@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { HardDrive, Cpu, Network, BookOpen, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';

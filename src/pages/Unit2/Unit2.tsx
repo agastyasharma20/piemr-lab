@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import styles from './Unit2.module.css';
 import DiskSimulation from './DiskSimulation';
@@ -7,7 +6,7 @@ const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.1, duration: 0.5, ease: [0.4, 0, 0.2, 1] }
+    transition: { delay: i * 0.1, duration: 0.5, ease: "easeInOut" } as any
   })
 };
 
@@ -56,11 +55,34 @@ const Unit2 = () => {
         </div>
       </motion.section>
 
-      {/* ---- Interactive Lab ---- */}
+      {/* Interactive Lab */}
       <motion.section className={styles.labSection} custom={2} variants={fadeUp}>
         <h2 className={styles.sectionTitle} style={{ fontSize: '1.4rem' }}>
           Interactive Lab: Disk Scheduling Algorithms
         </h2>
+        
+        {/* Seek Formulas */}
+        <div style={{
+          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem',
+          marginBottom: '1.5rem', background: 'rgba(26,92,190,0.05)', padding: '1.25rem',
+          borderRadius: 'var(--border-radius-lg)', border: '1px solid var(--border-glow)'
+        }}>
+          <div>
+            <h4 style={{ color: 'var(--accent-primary)', fontSize: '0.85rem', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Total Seek Distance (TSD)</h4>
+            <div style={{ background: 'rgba(0,0,0,0.2)', padding: '0.6rem', borderRadius: '6px', textAlign: 'center', fontFamily: 'monospace', color: 'var(--text-primary)' }}>
+              TSD = Σ |headᵢ - headᵢ₋₁|
+            </div>
+            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '0.4rem' }}>Sum of absolute differences between consecutive track positions.</p>
+          </div>
+          <div>
+            <h4 style={{ color: 'var(--accent-primary)', fontSize: '0.85rem', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Average Seek Time (AST)</h4>
+            <div style={{ background: 'rgba(0,0,0,0.2)', padding: '0.6rem', borderRadius: '6px', textAlign: 'center', fontFamily: 'monospace', color: 'var(--text-primary)' }}>
+              AST = TSD / n
+            </div>
+            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '0.4rem' }}>Where $n$ is the total number of serviced requests.</p>
+          </div>
+        </div>
+
         <DiskSimulation />
       </motion.section>
 

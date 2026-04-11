@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import styles from './Unit4.module.css';
 import ProducerConsumer from './ProducerConsumer';
@@ -8,7 +7,7 @@ const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.1, duration: 0.5, ease: [0.4, 0, 0.2, 1] }
+    transition: { delay: i * 0.1, duration: 0.5, ease: "easeInOut" } as any
   })
 };
 
@@ -185,6 +184,56 @@ const Unit4 = () => {
             Only safety-critical systems (aerospace, nuclear, medical) justify the overhead of full prevention.
           </p>
         </motion.div>
+      </motion.section>
+
+      {/* Mathematical Foundation: Banker's Algorithm */}
+      <motion.section custom={4} variants={fadeUp} style={{
+        background: 'rgba(155,28,28,0.05)',
+        padding: '2rem',
+        borderRadius: 'var(--border-radius-xl)',
+        border: '1px solid rgba(155,28,28,0.2)',
+        marginBottom: '2rem'
+      }}>
+        <h2 className={styles.sectionTitle} style={{ color: 'var(--accent-maroon)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <span style={{ width: 4, height: '1.2em', background: 'var(--accent-maroon)', borderRadius: 4, display: 'inline-block' }} />
+          Mathematical Foundation: Banker's Algorithm
+        </h2>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
+          The Banker's algorithm is a resource allocation and deadlock avoidance algorithm that tests for safety by simulating the allocation for predetermined maximum possible amounts of all resources.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
+          <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.25rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+             <h4 style={{ color: 'var(--accent-maroon)', marginBottom: '0.5rem', fontSize: '0.9rem' }}>1. THE NEED MATRIX</h4>
+             <code style={{ fontSize: '1.1rem', color: 'var(--text-primary)', display: 'block', margin: '0.5rem 0' }}>Need[i,j] = Max[i,j] - Allocation[i,j]</code>
+             <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Represents the remaining resources required by process $i$ to complete its task.</p>
+          </div>
+          <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.25rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+             <h4 style={{ color: 'var(--accent-maroon)', marginBottom: '0.5rem', fontSize: '0.9rem' }}>2. SAFETY CONDITION</h4>
+             <code style={{ fontSize: '1.1rem', color: 'var(--text-primary)', display: 'block', margin: '0.5rem 0' }}>Need<sub>i</sub> ≤ Available</code>
+             <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>A state is <b>SAFE</b> if there exists a sequence of processes such that each can be satisfied by current available resources.</p>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* OS Insights */}
+      <motion.section custom={5} variants={fadeUp} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+          <div className="glass-panel-md" style={{ padding: '1.5rem', borderLeft: '4px solid var(--accent-tertiary)' }}>
+              <h3 style={{ color: 'var(--accent-tertiary)', fontSize: '1.1rem', marginBottom: '0.5rem' }}>💡 Deadlock Prevention vs Avoidance</h3>
+              <p style={{ fontSize: '0.9rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+                <b>Prevention</b> works by ensuring that at least one of the four Coffman conditions cannot hold.
+                <b>Avoidance</b> (Banker's) allows the conditions to exist but dynamically decides if a resource request
+                can be granted without leading to an unsafe state.
+              </p>
+          </div>
+          <div className="glass-panel-md" style={{ padding: '1.5rem', borderLeft: '4px solid var(--success)' }}>
+              <h3 style={{ color: 'var(--success)', fontSize: '1.1rem', marginBottom: '0.5rem' }}>🚦 Semaphore Invariants</h3>
+              <p style={{ fontSize: '0.9rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+                For a binary semaphore $S$:
+                <br/>• $wait(S)$: <code>while(S ≤ 0); S--;</code>
+                <br/>• $signal(S)$: <code>S++;</code>
+                <br/>This ensures <b>Mutual Exclusion</b> in the critical section.
+              </p>
+          </div>
       </motion.section>
 
     </motion.div>

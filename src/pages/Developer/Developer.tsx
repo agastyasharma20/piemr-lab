@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import styles from './Developer.module.css';
 
@@ -74,7 +73,7 @@ const Developer = () => {
             <div className={styles.detailItem}>
               <span className={styles.label}>Institution</span>
               <span className={styles.value} style={{color: 'var(--text-primary)'}}>
-                Prestige Institute of Engineering Management & Research
+                PIEMR
               </span>
             </div>
 
