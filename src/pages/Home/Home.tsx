@@ -104,10 +104,15 @@ const Home = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.15 + 0.2, duration: 0.4 }}
               onClick={() => !subject.comingSoon && navigate(subject.path)}
-              whileHover={subject.comingSoon ? {} : { y: -8, boxShadow: `0 15px 35px -10px ${subject.color}50`, borderColor: subject.color }}
+              whileHover={{ y: -8, boxShadow: `0 15px 35px -10px ${subject.color}50`, borderColor: subject.color }}
               whileTap={subject.comingSoon ? {} : { scale: 0.98 }}
-              style={{ padding: '2.5rem', borderTop: `4px solid ${subject.color}`, opacity: subject.comingSoon ? 0.8 : 1, cursor: subject.comingSoon ? 'default' : 'pointer' }}
+              style={{ padding: '2.5rem', borderTop: `4px solid ${subject.color}`, cursor: subject.comingSoon ? 'default' : 'pointer' }}
             >
+              {subject.comingSoon && (
+                <div className={styles.comingSoonOverlay}>
+                   Coming Soon...
+                </div>
+              )}
               <div className={styles.cardHeader}>
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                   <div className={styles.iconBox} style={{ backgroundColor: `${subject.color}15`, border: `1px solid ${subject.color}30`, color: subject.color }}>
@@ -119,15 +124,9 @@ const Home = () => {
                     </span>
                   )}
                 </div>
-                {subject.comingSoon ? (
-                   <div style={{ background: 'rgba(255,255,255,0.05)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.75rem', color: 'var(--text-secondary)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                     Coming Soon
-                   </div>
-                ) : (
-                  <div style={{ background: 'rgba(255,255,255,0.05)', padding: '8px', borderRadius: '50%' }}>
-                    <ChevronRight className={styles.arrow} size={24} />
-                  </div>
-                )}
+                <div style={{ background: 'rgba(255,255,255,0.05)', padding: '8px', borderRadius: '50%' }}>
+                  <ChevronRight className={styles.arrow} size={24} />
+                </div>
               </div>
               <h2 className={styles.cardTitle} style={{ fontSize: '1.8rem', marginTop: '1.5rem', fontFamily: 'var(--font-heading)' }}>
                  {subject.title}
