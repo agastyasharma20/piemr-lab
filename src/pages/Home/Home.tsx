@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Cpu, TerminalSquare, ChevronRight, BookOpen, Network, Boxes, Calculator, Database, Binary } from 'lucide-react';
+import { Cpu, TerminalSquare, ChevronRight, BookOpen, Network, Boxes, Calculator, Database } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Home.module.css';
 
@@ -10,8 +10,7 @@ const subjects = [
     desc: 'Deep dive into computer resource management, scheduling algorithms, concurrencly, and file systems.', 
     icon: TerminalSquare, 
     color: 'var(--accent-primary)',
-    path: '/os',
-    semester: '4th Semester'
+    path: '/os'
   },
   { 
     id: 'coa', 
@@ -20,7 +19,6 @@ const subjects = [
     icon: Cpu, 
     color: 'var(--accent-tertiary)',
     path: '/coa',
-    semester: '4th Semester',
     comingSoon: true
   },
   { 
@@ -30,7 +28,6 @@ const subjects = [
     icon: Network, 
     color: 'var(--warning)',
     path: '#',
-    semester: '4th Semester',
     comingSoon: true
   },
   { 
@@ -40,7 +37,6 @@ const subjects = [
     icon: Boxes, 
     color: 'var(--info)',
     path: '#',
-    semester: '4th Semester',
     comingSoon: true
   },
   { 
@@ -50,7 +46,6 @@ const subjects = [
     icon: Calculator, 
     color: '#10b981',
     path: '#',
-    semester: '4th Semester',
     comingSoon: true
   },
   { 
@@ -60,17 +55,6 @@ const subjects = [
     icon: Database, 
     color: '#fbbf24',
     path: '#',
-    semester: '4th Semester',
-    comingSoon: true
-  },
-  { 
-    id: 'toc', 
-    title: 'Theory of Computation', 
-    desc: 'Discover automata theory, formal languages, Turing machines, and computational decidability.', 
-    icon: Binary, 
-    color: '#8b5cf6',
-    path: '#',
-    semester: '4th Semester',
     comingSoon: true
   }
 ];
@@ -118,11 +102,7 @@ const Home = () => {
                   <div className={styles.iconBox} style={{ backgroundColor: `${subject.color}15`, border: `1px solid ${subject.color}30`, color: subject.color }}>
                     <Icon size={32} />
                   </div>
-                  {subject.semester && (
-                    <span className="badge" style={{ backgroundColor: `${subject.color}15`, color: subject.color, border: `1px solid ${subject.color}30` }}>
-                      {subject.semester}
-                    </span>
-                  )}
+
                 </div>
                 <div style={{ background: 'rgba(255,255,255,0.05)', padding: '8px', borderRadius: '50%' }}>
                   <ChevronRight className={styles.arrow} size={24} />
