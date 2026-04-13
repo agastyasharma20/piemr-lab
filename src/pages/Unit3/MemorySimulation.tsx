@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { fifoReplacement, lruReplacement, optimalReplacement } from '../../algorithms/pageReplacement';
 import type { PageReplacementResult } from '../../algorithms/pageReplacement';
 import { memoryAlgorithmDetails } from '../../algorithms/MemoryAlgorithmDetails';
 import { memoryPracticeQuestions } from '../../data/practiceQuestions';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, Download } from 'lucide-react';
 import styles from './Unit3.module.css';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 const ALOGS = {
   FIFO: fifoReplacement,
@@ -12,23 +14,34 @@ const ALOGS = {
   Optimal: optimalReplacement,
 };
 
-const MemorySimulation = () => {
+type MemorySimulationProps = {
+  forcedAlgorithm?: keyof typeof ALOGS;
+};
+
+const MemorySimulation = ({ forcedAlgorithm }: MemorySimulationProps = {}) => {
   const [pagesStr, setPagesStr] = useState(memoryPracticeQuestions[0].referenceString);
   const [frameCount, setFrameCount] = useState(memoryPracticeQuestions[0].frames);
   const [selectedQuestion, setSelectedQuestion] = useState(memoryPracticeQuestions[0].id);
-  const [algorithm, setAlgorithm] = useState<keyof typeof ALOGS>('LRU');
+  const [algorithm, setAlgorithm] = useState<keyof typeof ALOGS>(forcedAlgorithm || 'LRU');
   
-  // Animation/Playback State
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   
-  // Quiz State
   const [quizIndex, setQuizIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
   
   const [result, setResult] = useState<PageReplacementResult | null>(null);
   const pagesArray = pagesStr.split(',').map(r => parseInt(r.trim(), 10)).filter(n => !isNaN(n));
+
+  const exportRef = useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
+
+  useEffect(() => {
+    if (forcedAlgorithm) {
+      setAlgorithm(forcedAlgorithm);
+    }
+  }, [forcedAlgorithm]);
 
   useEffect(() => {
     try {
@@ -40,7 +53,6 @@ const MemorySimulation = () => {
     } catch (e) { }
   }, [pagesStr, frameCount, algorithm]);
 
-  // Auto-play effect
   useEffect(() => {
     if (isPlaying && result) {
       const interval = setInterval(() => {
@@ -69,19 +81,60 @@ const MemorySimulation = () => {
     }
   };
 
+  const handleExport = async (type: 'png' | 'pdf') => {
+    if (!exportRef.current) return;
+    setIsExporting(true);
+    
+    setTimeout(async () => {
+      try {
+        const canvas = await html2canvas(exportRef.current!, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#0f172a'
+        });
+        const imgData = canvas.toDataURL('image/png');
+
+        if (type === 'png') {
+          const link = document.createElement('a');
+          link.download = `Memory_Simulation_${algorithm}.png`;
+          link.href = imgData;
+          link.click();
+        } else {
+          const pdf = new jsPDF('p', 'mm', 'a4');
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+          pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+          pdf.save(`Memory_Simulation_${algorithm}.pdf`);
+        }
+      } catch (err) {
+        console.error("Export failed", err);
+      }
+      setIsExporting(false);
+    }, 100);
+  };
+
   const currentQuizzes = memoryPracticeQuestions.find(q => q.id === selectedQuestion)?.quizzes || [];
   const currentQuiz = currentQuizzes[quizIndex];
 
-  // Derived Metrics based on currentStep
   const visibleResult = result ? {
       pageFaults: result.isFault.slice(0, currentStep).filter(f => f).length,
       pageHits: result.isFault.slice(0, currentStep).filter(f => !f).length,
   } : { pageFaults: 0, pageHits: 0 };
 
   return (
-    <div className={`glass-panel-md ${styles.labContainer}`}>
-       {/* PRACTICE QUESTIONS SECTION */}
-       <div style={{background: 'rgba(212,160,23,0.05)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border-gold)', marginBottom: '1.5rem'}}>
+    <div className={`glass-panel-md ${styles.labContainer}`} style={{ position: 'relative' }}>
+      
+      {/* Export Action Bar */}
+      <div style={{ position: 'absolute', top: 15, right: 20, display: 'flex', gap: '8px', zIndex: 10 }}>
+        <button onClick={() => handleExport('png')} style={{ background: 'var(--accent-tertiary)', color: 'black', border: 'none', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem' }}>
+          <Download size={14} /> PNG
+        </button>
+        <button onClick={() => handleExport('pdf')} style={{ background: 'var(--accent-primary)', color: 'white', border: 'none', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem' }}>
+          <Download size={14} /> PDF
+        </button>
+      </div>
+
+       <div style={{background: 'rgba(212,160,23,0.05)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border-gold)', marginBottom: '1.5rem', marginTop: '2.5rem'}}>
         <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem'}}>
           <HelpCircle size={18} style={{color: 'var(--accent-tertiary)'}} />
           <h4 style={{margin: 0, color: 'var(--accent-tertiary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em'}}>Practice Questions</h4>
@@ -101,7 +154,6 @@ const MemorySimulation = () => {
           </p>
         </div>
 
-        {/* QUIZ SUB-SECTION */}
         {currentQuiz && (
           <div style={{marginTop: '1.25rem', padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)'}}>
             <p style={{margin: '0 0 0.75rem 0', fontWeight: 600, fontSize: '0.95rem'}}>
@@ -165,12 +217,11 @@ const MemorySimulation = () => {
         </div>
         <div className={styles.inputGroup}>
           <label>Algorithm</label>
-          <select value={algorithm} onChange={e => setAlgorithm(e.target.value as any)}>
+          <select value={algorithm} onChange={e => setAlgorithm(e.target.value as any)} disabled={!!forcedAlgorithm}>
             {Object.keys(ALOGS).map(k => <option key={k} value={k}>{k}</option>)}
           </select>
         </div>
 
-        {/* Playback Controls */}
         <div className={styles.playbackControls} style={{marginTop: '1rem', width: '100%', display: 'flex', gap: '0.75rem', alignItems: 'center'}}>
            <button 
              className={styles.iconBtn} 
@@ -187,76 +238,98 @@ const MemorySimulation = () => {
         </div>
       </div>
 
-      <div className={styles.resultsGrid}>
-        <div className={styles.resultCard}>
-          <p>Total Page Faults</p>
-          <h2 style={{color: 'var(--danger)'}}>{visibleResult.pageFaults}</h2>
-        </div>
-        <div className={styles.resultCard}>
-          <p>Total Page Hits</p>
-          <h2 style={{color: 'var(--success)'}}>{visibleResult.pageHits}</h2>
-        </div>
-        <div className={styles.resultCard}>
-          <p>Hit Ratio</p>
-          <h2 style={{color: 'var(--info)'}}>
-            {currentStep > 0 ? ((visibleResult.pageHits / currentStep) * 100).toFixed(1) : 0}%
-          </h2>
-        </div>
-      </div>
-
-      {/* Memory Formulas */}
-      <div style={{
-          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', 
-          marginBottom: '1.5rem', background: 'rgba(0,48,115,0.1)', padding: '1.5rem', borderRadius: '12px'
-      }}>
-          <div style={{borderLeft: '4px solid var(--accent-tertiary)', paddingLeft: '1rem'}}>
-              <h4 style={{fontSize: '0.8rem', color: 'var(--accent-tertiary)', textTransform: 'uppercase', marginBottom: '0.5rem'}}>Page Fault Rate</h4>
-              <code style={{fontSize: '1rem', display: 'block', margin: '0.5rem 0'}}>PFR = (Total Faults / Total References) × 100</code>
-          </div>
-          <div style={{borderLeft: '4px solid var(--success)', paddingLeft: '1rem'}}>
-              <h4 style={{fontSize: '0.8rem', color: 'var(--success)', textTransform: 'uppercase', marginBottom: '0.5rem'}}>Hit Ratio</h4>
-              <code style={{fontSize: '1rem', display: 'block', margin: '0.5rem 0'}}>HR = (Total Hits / Total References) × 100</code>
-          </div>
-      </div>
-
-      <div className={styles.memoryGridWrapper}>
-        <div className={styles.memoryGrid}>
-          {pagesArray.map((page, stepIdx) => (
-            <div 
-                key={stepIdx} 
-                className={styles.memoryStep}
-                style={{
-                  opacity: stepIdx < currentStep ? 1 : (stepIdx === currentStep ? 1 : 0.3),
-                  transform: stepIdx === currentStep ? 'scale(1.1)' : 'scale(1)',
-                  transition: 'all 0.3s'
-                }}
-            >
-              <div 
-                className={styles.pageRequest}
-                style={{
-                    background: stepIdx === currentStep - 1 ? 'var(--accent-tertiary)' : 'transparent',
-                    color: stepIdx === currentStep - 1 ? 'black' : 'var(--accent-tertiary)',
-                    borderRadius: '4px'
-                }}
-              >
-                {page}
-              </div>
-              <div className={styles.framesContainer}>
-                {(result?.framesSteps[stepIdx] || Array(frameCount).fill(null)).map((frame, fIdx) => (
-                  <div key={fIdx} className={`${styles.frameBox} ${frame !== null ? styles.frameFilled : ''}`}>
-                    {frame !== null ? frame : '-'}
-                  </div>
-                ))}
-              </div>
-              <div className={`${styles.faultIndicator} ${result?.isFault[stepIdx] ? styles.fault : styles.hit}`}>
-                {stepIdx < currentStep ? (result?.isFault[stepIdx] ? 'F' : 'H') : '?'}
-              </div>
+      {/* --- EXPORT VIEWPORT TARGET --- */}
+      <div ref={exportRef} style={{ background: isExporting ? '#0f172a' : 'transparent', padding: isExporting ? '2rem' : '0' }}>
+        
+        {isExporting && (
+          <div style={{ marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem', display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <h2 style={{ color: 'white', margin: 0 }}>PIEMR Virtual Lab - Memory Management</h2>
+              <p style={{ color: 'var(--accent-tertiary)', margin: '0.2rem 0 0 0', fontWeight: 'bold' }}>Algorithm: {algorithm} Page Replacement</p>
             </div>
-          ))}
+            <div style={{ textAlign: 'right', color: 'var(--text-secondary)' }}>
+              <p style={{ margin: '0 0 0.2rem 0' }}><b>Reference String:</b> {pagesStr}</p>
+              <p style={{ margin: 0 }}><b>Total Frames:</b> {frameCount}</p>
+            </div>
+          </div>
+        )}
+
+        <div className={styles.resultsGrid}>
+          <div className={styles.resultCard} style={{ background: isExporting ? 'rgba(255,255,255,0.05)' : '' }}>
+            <p>Total Page Faults</p>
+            <h2 style={{color: 'var(--danger)'}}>{isExporting ? result?.isFault.filter(f => f).length : visibleResult.pageFaults}</h2>
+          </div>
+          <div className={styles.resultCard} style={{ background: isExporting ? 'rgba(255,255,255,0.05)' : '' }}>
+            <p>Total Page Hits</p>
+            <h2 style={{color: 'var(--success)'}}>{isExporting ? result?.isFault.filter(f => !f).length : visibleResult.pageHits}</h2>
+          </div>
+          <div className={styles.resultCard} style={{ background: isExporting ? 'rgba(255,255,255,0.05)' : '' }}>
+            <p>Hit Ratio</p>
+            <h2 style={{color: 'var(--info)'}}>
+              {isExporting && result ? ((result.isFault.filter(f => !f).length / pagesArray.length) * 100).toFixed(1) : (currentStep > 0 ? ((visibleResult.pageHits / currentStep) * 100).toFixed(1) : 0)}%
+            </h2>
+          </div>
         </div>
+
+        <div style={{
+            display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', 
+            marginBottom: '1.5rem', background: isExporting ? 'rgba(37,99,235,0.1)' : 'rgba(0,48,115,0.1)', padding: '1.5rem', borderRadius: '12px'
+        }}>
+            <div style={{borderLeft: '4px solid var(--accent-tertiary)', paddingLeft: '1rem'}}>
+                <h4 style={{fontSize: '0.8rem', color: 'var(--accent-tertiary)', textTransform: 'uppercase', marginBottom: '0.5rem'}}>Page Fault Rate</h4>
+                <code style={{fontSize: '1rem', display: 'block', margin: '0.5rem 0', color: isExporting ? 'white' : 'inherit'}}>PFR = (Total Faults / Total References) × 100</code>
+            </div>
+            <div style={{borderLeft: '4px solid var(--success)', paddingLeft: '1rem'}}>
+                <h4 style={{fontSize: '0.8rem', color: 'var(--success)', textTransform: 'uppercase', marginBottom: '0.5rem'}}>Hit Ratio</h4>
+                <code style={{fontSize: '1rem', display: 'block', margin: '0.5rem 0', color: isExporting ? 'white' : 'inherit'}}>HR = (Total Hits / Total References) × 100</code>
+            </div>
+        </div>
+
+        <div className={styles.memoryGridWrapper} style={{ background: isExporting ? 'transparent' : '' }}>
+          <div className={styles.memoryGrid}>
+            {pagesArray.map((page, stepIdx) => (
+              <div 
+                  key={stepIdx} 
+                  className={styles.memoryStep}
+                  style={{
+                    opacity: (isExporting || stepIdx < currentStep) ? 1 : (stepIdx === currentStep ? 1 : 0.3),
+                    transform: (!isExporting && stepIdx === currentStep) ? 'scale(1.1)' : 'scale(1)',
+                    transition: 'all 0.3s'
+                  }}
+              >
+                <div 
+                  className={styles.pageRequest}
+                  style={{
+                      background: (!isExporting && stepIdx === currentStep - 1) ? 'var(--accent-tertiary)' : 'transparent',
+                      color: (!isExporting && stepIdx === currentStep - 1) ? 'black' : 'var(--accent-tertiary)',
+                      borderRadius: '4px'
+                  }}
+                >
+                  {page}
+                </div>
+                <div className={styles.framesContainer}>
+                  {(result?.framesSteps[stepIdx] || Array(frameCount).fill(null)).map((frame, fIdx) => (
+                    <div key={fIdx} className={`${styles.frameBox} ${frame !== null ? styles.frameFilled : ''}`}>
+                      {frame !== null ? frame : '-'}
+                    </div>
+                  ))}
+                </div>
+                <div className={`${styles.faultIndicator} ${result?.isFault[stepIdx] ? styles.fault : styles.hit}`}>
+                  {(isExporting || stepIdx < currentStep) ? (result?.isFault[stepIdx] ? 'F' : 'H') : '?'}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {isExporting && (
+          <div style={{ marginTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem', textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+             <p style={{ margin: 0 }}>Designed and Developed by Agastya Sharma | PIEMR Virtual Lab</p>
+          </div>
+        )}
       </div>
 
-      {result && (
+      {result && !isExporting && (
         <div style={{marginTop: '2rem', background: 'rgba(0,0,0,0.2)', padding: '2rem', borderRadius: 'var(--border-radius-lg)', border: '1px solid var(--border-glow)', boxShadow: 'var(--shadow-glow)'}}>
             <h2 style={{color: 'var(--accent-primary)', marginBottom: '1rem', borderBottom: '2px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem'}}>
                 {memoryAlgorithmDetails[algorithm].name} Insight

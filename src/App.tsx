@@ -2,8 +2,14 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import Home from './pages/Home/Home';
 import Unit1 from './pages/Unit1/Unit1';
+import FunctionsTypes from './pages/Unit1/FunctionsTypes';
+import StrategyPlan from './pages/Unit1/StrategyPlan';
 import Unit2 from './pages/Unit2/Unit2';
-import Unit3 from './pages/Unit3/Unit3';
+import AlgorithmPage from './pages/Unit2/AlgorithmPage';
+import CPUHub from './pages/Unit3/CPUHub';
+import CPUAlgorithmPage from './pages/Unit3/CPUAlgorithmPage';
+import MemoryHub from './pages/Unit3/MemoryHub';
+import MemoryAlgorithmPage from './pages/Unit3/MemoryAlgorithmPage';
 import Unit4 from './pages/Unit4/Unit4';
 import Unit5 from './pages/Unit5/Unit5';
 import Developer from './pages/Developer/Developer';
@@ -33,8 +39,14 @@ function App() {
           {/* OS Module Routes */}
           <Route path="/os" element={<OSDashboard />} />
           <Route path="/os/intro" element={<Unit1 />} />
+          <Route path="/os/intro/functions-types" element={<FunctionsTypes />} />
+          <Route path="/os/intro/strategy" element={<StrategyPlan />} />
           <Route path="/os/disk-scheduling" element={<Unit2 />} />
-          <Route path="/os/cpu-memory" element={<Unit3 />} />
+          <Route path="/os/disk-scheduling/:algorithm" element={<AlgorithmPage />} />
+          <Route path="/os/cpu-scheduling" element={<CPUHub />} />
+          <Route path="/os/cpu-scheduling/:algorithm" element={<CPUAlgorithmPage />} />
+          <Route path="/os/memory-management" element={<MemoryHub />} />
+          <Route path="/os/memory-management/:algorithm" element={<MemoryAlgorithmPage />} />
           <Route path="/os/concurrency" element={<Unit4 />} />
           <Route path="/os/advanced-os" element={<Unit5 />} />
           <Route path="/os/experiments/:id" element={<ExperimentDetails />} />

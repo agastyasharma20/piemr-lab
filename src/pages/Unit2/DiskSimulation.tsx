@@ -13,9 +13,11 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
-import { Play, Pause, RotateCcw, StepForward, StepBack } from 'lucide-react';
+import { Play, Pause, RotateCcw, StepForward, StepBack, Download } from 'lucide-react';
 import styles from './Unit2.module.css';
 import DiskSimulation3D from './DiskSimulation3D';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 ChartJS.register(
   CategoryScale,
@@ -36,13 +38,17 @@ const ALGORITMS = {
   'C-LOOK': clook,
 };
 
-const DiskSimulation = () => {
+type DiskSimulationProps = {
+  forcedAlgorithm?: keyof typeof ALGORITMS;
+};
+
+const DiskSimulation = ({ forcedAlgorithm }: DiskSimulationProps = {}) => {
   const [requestsStr, setRequestsStr] = useState('82, 170, 43, 140, 24, 16, 190');
   const [trackArray, setTrackArray] = useState<number[]>([82, 170, 43, 140, 24, 16, 190]);
   const [isCustomMode, setIsCustomMode] = useState(false);
   const [head, setHead] = useState(50);
   const [diskSize] = useState(200);
-  const [algorithm, setAlgorithm] = useState<keyof typeof ALGORITMS>('FCFS');
+  const [algorithm, setAlgorithm] = useState<keyof typeof ALGORITMS>(forcedAlgorithm || 'FCFS');
   const [direction, setDirection] = useState<'right' | 'left'>('right');
   
   const [result, setResult] = useState<DiskSchedulingResult | null>(null);
@@ -51,6 +57,47 @@ const DiskSimulation = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const timerRef = useRef<number | null>(null);
+
+  const exportRef = useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
+
+  useEffect(() => {
+    if (forcedAlgorithm) {
+      setAlgorithm(forcedAlgorithm);
+    }
+  }, [forcedAlgorithm]);
+
+  const handleExport = async (type: 'png' | 'pdf') => {
+    if (!exportRef.current) return;
+    setIsExporting(true);
+    
+    setTimeout(async () => {
+      try {
+        const canvas = await html2canvas(exportRef.current!, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#0f172a'
+        });
+        const imgData = canvas.toDataURL('image/png');
+
+        if (type === 'png') {
+          const link = document.createElement('a');
+          link.download = `Disk_Simulation_${algorithm}.png`;
+          link.href = imgData;
+          link.click();
+        } else {
+          const pdf = new jsPDF('p', 'mm', 'a4');
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+          pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+          pdf.save(`Disk_Simulation_${algorithm}.pdf`);
+        }
+      } catch (err) {
+        console.error("Export failed", err);
+      }
+      setIsExporting(false);
+    }, 100);
+  };
 
   useEffect(() => {
     try {
@@ -93,10 +140,7 @@ const DiskSimulation = () => {
   }, [isPlaying, maxSteps]);
 
   const chartData = useMemo(() => {
-    // We only show up to currentStep in the chart for animated effect
-    const sequenceToShow = sequence.slice(0, currentStep + 1);
-    
-    // For vertical timeline (steps on Y axis, track on X axis)
+    const sequenceToShow = isExporting ? sequence : sequence.slice(0, currentStep + 1);
     const dataPoints = sequenceToShow.map((track, step) => ({ x: track, y: step }));
 
     return {
@@ -113,7 +157,7 @@ const DiskSimulation = () => {
         }
       ]
     };
-  }, [sequence, currentStep]);
+  }, [sequence, currentStep, isExporting]);
 
   const chartOptions = {
     responsive: true,
@@ -160,8 +204,19 @@ const DiskSimulation = () => {
   const currentTrack = sequence[currentStep] ?? head;
 
   return (
-    <div className={`glass-panel-md ${styles.labContainer}`}>
-      <div style={{display: 'flex', gap: '1rem', marginBottom: '1.5rem', width: '100%'}}>
+    <div className={`glass-panel-md ${styles.labContainer}`} style={{ position: 'relative' }}>
+      
+      {/* Export Action Bar */}
+      <div style={{ position: 'absolute', top: 15, right: 20, display: 'flex', gap: '8px', zIndex: 10 }}>
+        <button onClick={() => handleExport('png')} style={{ background: 'var(--accent-tertiary)', color: 'black', border: 'none', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem' }}>
+          <Download size={14} /> PNG
+        </button>
+        <button onClick={() => handleExport('pdf')} style={{ background: 'var(--accent-primary)', color: 'white', border: 'none', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem' }}>
+          <Download size={14} /> PDF
+        </button>
+      </div>
+
+      <div style={{display: 'flex', gap: '1rem', marginBottom: '1.5rem', width: '100%', marginTop: '2.5rem'}}>
         <button 
           onClick={() => setIsCustomMode(false)}
           style={{flex:1, padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--border-gold)', background: !isCustomMode ? 'rgba(212,160,23,0.15)' : 'transparent', color: !isCustomMode ? 'var(--accent-tertiary)' : 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600}}
@@ -220,7 +275,7 @@ const DiskSimulation = () => {
                       &times;
                     </button>
                   </div>
-                ))}
+               ))}
                 {trackArray.length === 0 && <span style={{color: 'var(--text-muted)', fontSize: '0.9rem', gridColumn: '1 / -1', textAlign: 'center', padding: '1rem'}}>Queue empty. Add a track to begin the simulation.</span>}
              </div>
           </div>
@@ -233,7 +288,7 @@ const DiskSimulation = () => {
           </div>
           <div className={styles.inputGroup} style={{flex: 1}}>
             <label>Scheduling Algorithm</label>
-            <select value={algorithm} onChange={e => setAlgorithm(e.target.value as any)}>
+            <select value={algorithm} onChange={e => setAlgorithm(e.target.value as any)} disabled={!!forcedAlgorithm}>
               {Object.keys(ALGORITMS).map(k => <option key={k} value={k}>{k}</option>)}
             </select>
           </div>
@@ -263,31 +318,59 @@ const DiskSimulation = () => {
          <span className={styles.stepIndicator}>Step: {currentStep} / {maxSteps}</span>
       </div>
 
-      <div className={styles.results}>
-        <div className={styles.metric}>
-          <span>Total Seek Time:</span>
-          <strong>{result?.totalSeekTime || 0}</strong>
+      {/* --- EXPORT VIEWPORT TARGET --- */}
+      <div ref={exportRef} style={{ background: isExporting ? '#0f172a' : 'transparent', padding: isExporting ? '2rem' : '0', marginTop: '2rem' }}>
+        
+        {isExporting && (
+          <div style={{ marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem', display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <h2 style={{ color: 'white', margin: 0 }}>PIEMR Virtual Lab - Disk Scheduling</h2>
+              <p style={{ color: 'var(--accent-tertiary)', margin: '0.2rem 0 0 0', fontWeight: 'bold' }}>Algorithm: {algorithm}</p>
+            </div>
+            <div style={{ textAlign: 'right', color: 'var(--text-secondary)' }}>
+              <p style={{ margin: '0 0 0.2rem 0' }}><b>Track Queue:</b> {isCustomMode ? trackArray.join(', ') : requestsStr}</p>
+              <p style={{ margin: '0 0 0.2rem 0' }}><b>Head Start:</b> {head}</p>
+              <p style={{ margin: 0 }}><b>Disk Size:</b> {diskSize}</p>
+            </div>
+          </div>
+        )}
+
+        <div className={styles.results} style={{ background: isExporting ? 'rgba(255,255,255,0.05)' : '' }}>
+          <div className={styles.metric}>
+            <span>Total Seek Time:</span>
+            <strong>{result?.totalSeekTime || 0}</strong>
+          </div>
+          <div className={styles.metric}>
+            <span>{isExporting ? 'Final End Position' : 'Current Target Track'}:</span>
+            <strong>{isExporting ? result?.sequence[result.sequence.length - 1] : currentTrack}</strong>
+          </div>
+          {!isExporting && (
+            <div className={styles.metric}>
+              <span>Status:</span>
+              <strong>{currentStep === maxSteps ? 'Completed' : 'Running'}</strong>
+            </div>
+          )}
         </div>
-        <div className={styles.metric}>
-          <span>Current Target Track:</span>
-          <strong>{currentTrack}</strong>
+
+        <div className={styles.visualizationGrid}>
+          <div className={styles.chartContainer} style={{ background: isExporting ? 'rgba(255,255,255,0.05)' : '' }}>
+            {chartData.datasets.length > 0 && <Line options={chartOptions as any} data={chartData as any} />}
+          </div>
+          {!isExporting && (
+            <div className={styles.threeContainer}>
+              <DiskSimulation3D currentTrack={currentTrack} diskSize={diskSize} />
+            </div>
+          )}
         </div>
-        <div className={styles.metric}>
-          <span>Status:</span>
-          <strong>{currentStep === maxSteps ? 'Completed' : 'Running'}</strong>
-        </div>
+
+        {isExporting && (
+          <div style={{ marginTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem', textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+             <p style={{ margin: 0 }}>Designed and Developed by Agastya Sharma | PIEMR Virtual Lab</p>
+          </div>
+        )}
       </div>
 
-      <div className={styles.visualizationGrid}>
-        <div className={styles.chartContainer}>
-          {chartData.datasets.length > 0 && <Line options={chartOptions as any} data={chartData as any} />}
-        </div>
-        <div className={styles.threeContainer}>
-          <DiskSimulation3D currentTrack={currentTrack} diskSize={diskSize} />
-        </div>
-      </div>
-
-      {result && (
+      {result && !isExporting && (
         <div style={{marginTop: '2rem', background: 'rgba(0,0,0,0.2)', padding: '2rem', borderRadius: 'var(--border-radius-lg)', border: '1px solid var(--border-glow)', boxShadow: 'var(--shadow-glow)'}}>
             <h2 style={{color: 'var(--accent-primary)', marginBottom: '1rem', borderBottom: '2px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem'}}>
                 {diskAlgorithmDetails[algorithm].name} Insight

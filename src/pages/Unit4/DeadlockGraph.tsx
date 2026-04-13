@@ -1,71 +1,135 @@
 import { useState } from 'react';
-import styles from './Unit4.module.css';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const DeadlockGraph = () => {
   const [showDeadlock, setShowDeadlock] = useState(false);
 
   return (
-    <div className={`glass-panel-md ${styles.labContainer}`}>
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-        <div>
-            <h3 style={{color: 'var(--text-primary)', marginBottom: '0.5rem'}}>Resource Allocation Graph</h3>
-            <p style={{color: 'var(--text-secondary)'}}>A cycle in the graph indicates a deadlock if each resource has exactly one instance.</p>
+    <div style={{ background: 'rgba(0,0,0,0.1)', padding: '1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)', position: 'relative' }}>
+      
+      {/* Header and Controller */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+        <div style={{ maxWidth: '60%' }}>
+            <h3 style={{ color: 'white', marginBottom: '0.25rem', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ display: 'inline-block', width: '10px', height: '10px', background: showDeadlock ? 'var(--danger)' : 'var(--success)', borderRadius: '50%', boxShadow: showDeadlock ? '0 0 10px var(--danger)' : '0 0 10px var(--success)' }}></span>
+              Interactive Resource Allocation Graph (RAG)
+            </h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.5, margin: 0 }}>
+              Circles represent active <strong>Processes</strong>. Squares represent <strong>Resources</strong>. 
+              An edge from a Process to a Resource signifies a <em>Request</em>. An edge from a Resource to a Process signifies an <em>Assignment</em>.
+            </p>
         </div>
         <button 
-          className={`${styles.btn} ${showDeadlock ? styles.consumeBtn : styles.produceBtn}`} 
-          onClick={() => setShowDeadlock(!showDeadlock)}
+           onClick={() => setShowDeadlock(!showDeadlock)}
+           style={{
+             background: showDeadlock ? 'var(--success)' : 'var(--danger)',
+             color: 'white', fontWeight: 'bold', border: 'none', padding: '0.75rem 1.25rem', borderRadius: '8px', cursor: 'pointer',
+             transition: 'all 0.3s', boxShadow: showDeadlock ? '0 4px 15px rgba(16,185,129,0.3)' : '0 4px 15px rgba(239,68,68,0.3)',
+             fontSize: '0.95rem'
+           }}
         >
-          {showDeadlock ? 'Resolve Deadlock' : 'Simulate Request (Create Cycle)'}
+          {showDeadlock ? 'Resolve Deadlock (Release R1)' : 'Simulate Request (P2 → R1)'}
         </button>
       </div>
 
-      <div style={{ position: 'relative', height: '300px', background: 'rgba(0,0,0,0.2)', borderRadius: '12px', marginTop: '1rem', overflow: 'hidden' }}>
-        {/* Nodes */}
-        {/* Process 1 */}
-        <div style={{ position: 'absolute', top: '50px', left: '150px', width: '60px', height: '60px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold' }}>P1</div>
+      {/* Main Graph Visualization Area */}
+      <div style={{ position: 'relative', height: '380px', background: '#0a0f1c', borderRadius: '12px', marginTop: '1.5rem', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}>
         
-        {/* Process 2 */}
-        <div style={{ position: 'absolute', top: '50px', right: '150px', width: '60px', height: '60px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold' }}>P2</div>
-        
-        {/* Resource 1 */}
-        <div style={{ position: 'absolute', bottom: '50px', left: '150px', width: '60px', height: '60px', background: 'var(--info)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold' }}>R1</div>
+        {/* Dynamic Topology Grid Background */}
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.1, backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
 
-        {/* Resource 2 */}
-        <div style={{ position: 'absolute', bottom: '50px', right: '150px', width: '60px', height: '60px', background: 'var(--warning)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', color: '#000' }}>R2</div>
+        {/* Nodes layer */}
+        <div style={{ position: 'absolute', inset: 0 }}>
+          {/* Process 1 */}
+          <motion.div 
+            whileHover={{ scale: 1.1, boxShadow: '0 0 20px rgba(59,130,246,0.6)' }}
+            style={{ position: 'absolute', top: '70px', left: '20%', width: '70px', height: '70px', borderRadius: '50%', background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '1.2rem', color: 'white', border: '2px solid rgba(255,255,255,0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.4)', zIndex: 10 }}
+          >
+            P1
+          </motion.div>
+          
+          {/* Process 2 */}
+          <motion.div 
+            whileHover={{ scale: 1.1, boxShadow: '0 0 20px rgba(59,130,246,0.6)' }}
+            style={{ position: 'absolute', top: '70px', right: '20%', width: '70px', height: '70px', borderRadius: '50%', background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '1.2rem', color: 'white', border: '2px solid rgba(255,255,255,0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.4)', zIndex: 10 }}
+          >
+            P2
+          </motion.div>
+          
+          {/* Resource 1 */}
+          <motion.div 
+            whileHover={{ scale: 1.1, boxShadow: '0 0 20px rgba(16,185,129,0.5)' }}
+            style={{ position: 'absolute', bottom: '70px', left: '20%', width: '70px', height: '70px', background: 'linear-gradient(135deg, #10b981, #047857)', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '1.2rem', color: 'white', border: '2px solid rgba(255,255,255,0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.4)', zIndex: 10 }}
+          >
+            R1
+            <div style={{ position: 'absolute', bottom: -25, fontSize: '0.7rem', color: 'var(--text-secondary)' }}>1 Instance</div>
+          </motion.div>
 
+          {/* Resource 2 */}
+          <motion.div 
+            whileHover={{ scale: 1.1, boxShadow: '0 0 20px rgba(245,158,11,0.5)' }}
+            style={{ position: 'absolute', bottom: '70px', right: '20%', width: '70px', height: '70px', background: 'linear-gradient(135deg, #f59e0b, #b45309)', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '1.2rem', color: 'white', border: '2px solid rgba(255,255,255,0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.4)', zIndex: 10 }}
+          >
+            R2
+            <div style={{ position: 'absolute', bottom: -25, fontSize: '0.7rem', color: 'var(--text-secondary)' }}>1 Instance</div>
+          </motion.div>
+        </div>
+
+        {/* Dynamic Edges SVG */}
         <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
            <defs>
-             <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-               <path d="M0,0 L0,6 L9,3 z" fill="#fff" />
+             <marker id="arrow-white" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+               <path d="M0,0 L0,6 L9,3 z" fill="rgba(255,255,255,0.7)" />
              </marker>
-             <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-               <path d="M0,0 L0,6 L9,3 z" fill="var(--danger)" />
+             <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+               <path d="M0,0 L0,6 L9,3 z" fill="#ef4444" />
              </marker>
+             <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+               <feGaussianBlur stdDeviation="4" result="blur" />
+               <feComposite in="SourceGraphic" in2="blur" operator="over" />
+             </filter>
            </defs>
 
-           {/* R1 assigned to P1 (arrow from R1 to P1) */}
-           <line x1="180" y1="250" x2="180" y2="120" stroke="#fff" strokeWidth="3" markerEnd="url(#arrow)" />
+           {/* Edge: R1 -> P1 (Assignment) */}
+           <line x1="calc(20% + 35px)" y1="calc(100% - 140px)" x2="calc(20% + 35px)" y2="150" stroke="rgba(255,255,255,0.5)" strokeWidth="4" markerEnd="url(#arrow-white)" />
+           <text x="calc(20% + 45px)" y="210" fill="rgba(255,255,255,0.5)" fontSize="12" fontWeight="bold">Holds</text>
 
-           {/* R2 assigned to P2 (arrow from R2 to P2) */}
-           <line x1="calc(100% - 180px)" y1="250" x2="calc(100% - 180px)" y2="120" stroke="#fff" strokeWidth="3" markerEnd="url(#arrow)" />
+           {/* Edge: R2 -> P2 (Assignment) */}
+           <line x1="calc(80% - 35px)" y1="calc(100% - 140px)" x2="calc(80% - 35px)" y2="150" stroke="rgba(255,255,255,0.5)" strokeWidth="4" markerEnd="url(#arrow-white)" />
+           <text x="calc(80% - 30px)" y="210" fill="rgba(255,255,255,0.5)" fontSize="12" fontWeight="bold">Holds</text>
 
-           {/* P1 requests R2 (arrow from P1 to R2) */}
-           <line x1="220" y1="80" x2="calc(100% - 220px)" y2="250" stroke="#fff" strokeWidth="3" markerEnd="url(#arrow)" />
+           {/* Edge: P1 -> R2 (Request) */}
+           <line x1="calc(20% + 70px)" y1="120" x2="calc(80% - 70px)" y2="calc(100% - 120px)" stroke="rgba(255,255,255,0.5)" strokeWidth="4" markerEnd="url(#arrow-white)" />
+           <text x="50%" y="130" fill="rgba(255,255,255,0.5)" fontSize="12" fontWeight="bold" textAnchor="middle">Requests</text>
 
-           {/* P2 requests R1 (Creates cycle) ONLY IF showDeadlock */}
-           {showDeadlock && (
-             <line x1="calc(100% - 220px)" y1="80" x2="220" y2="250" stroke="var(--danger)" strokeWidth="3" strokeDasharray="5,5" markerEnd="url(#arrow-red)">
-                <animate attributeName="stroke-dashoffset" from="10" to="0" dur="0.5s" repeatCount="indefinite" />
-             </line>
-           )}
+           {/* Conditional Edge: P2 -> R1 (Dangerous Request creating Deadlock) */}
+           <AnimatePresence>
+             {showDeadlock && (
+               <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                 <line x1="calc(80% - 70px)" y1="100" x2="calc(20% + 70px)" y2="calc(100% - 100px)" stroke="#ef4444" strokeWidth="5" strokeDasharray="8,6" markerEnd="url(#arrow-red)" filter="url(#glow)">
+                    <animate attributeName="stroke-dashoffset" from="14" to="0" dur="0.6s" repeatCount="indefinite" />
+                 </line>
+                 <text x="50%" y="270" fill="#ef4444" fontSize="14" fontWeight="bold" textAnchor="middle" filter="url(#glow)">Requests (Wait)</text>
+               </motion.g>
+             )}
+           </AnimatePresence>
         </svg>
 
-        {/* Deadlock overlay */}
-        {showDeadlock && (
-          <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', background: 'rgba(239, 68, 68, 0.9)', padding: '1rem 2rem', borderRadius: '8px', fontWeight: 'bold', boxShadow: '0 0 20px rgba(239, 68, 68, 0.5)' }}>
-             DEADLOCK DETECTED!
-          </div>
-        )}
+        {/* Deadlock overlay alert */}
+        <AnimatePresence>
+          {showDeadlock && (
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0, y: '-50%', x: '-50%' }} 
+              animate={{ scale: 1, opacity: 1, y: '-50%', x: '-50%' }} 
+              exit={{ scale: 0.8, opacity: 0, y: '-50%', x: '-50%' }}
+              style={{ position: 'absolute', top: '50%', left: '50%', background: 'rgba(220, 38, 38, 0.95)', padding: '1.25rem 2.5rem', borderRadius: '12px', fontWeight: 'bold', boxShadow: '0 0 40px rgba(239, 68, 68, 0.8)', border: '2px solid #fecaca', zIndex: 20, textAlign: 'center' }}
+            >
+               <h2 style={{ margin: 0, color: 'white', letterSpacing: '0.1em', fontSize: '1.8rem', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>DEADLOCK CYCLE</h2>
+               <p style={{ margin: '0.25rem 0 0 0', color: '#fecaca', fontSize: '0.9rem', fontWeight: 500 }}>All 4 Coffman conditions fulfilled. System Halted.</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
       </div>
     </div>
   );

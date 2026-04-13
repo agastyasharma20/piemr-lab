@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import styles from './Unit2.module.css';
-import DiskSimulation from './DiskSimulation';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -10,7 +10,18 @@ const fadeUp = {
   })
 };
 
+const algorithms = [
+  { name: 'FCFS', desc: 'First Come First Serve - Simple streaming, but high seek time.' },
+  { name: 'SSTF', desc: 'Shortest Seek Time First - Better throughput but risky starvation.' },
+  { name: 'SCAN', desc: 'Elevator Algorithm - Sweeps back and forth across the tracks.' },
+  { name: 'C-SCAN', desc: 'Circular SCAN - Sweeps one way, provides more uniform wait time.' },
+  { name: 'LOOK', desc: 'Smart SCAN - Only sweeps as far as the last request.' },
+  { name: 'C-LOOK', desc: 'Circular LOOK - Industry standard mapping.' },
+];
+
 const Unit2 = () => {
+  const navigate = useNavigate();
+
   return (
     <motion.div
       className={styles.container}
@@ -20,15 +31,13 @@ const Unit2 = () => {
       {/* ---- Page Header ---- */}
       <motion.header className={styles.header} custom={0} variants={fadeUp}>
         <div className={styles.headerMeta}>
-
           <span className="badge badge-gold">Interactive Lab</span>
         </div>
         <h1 className="text-gradient" style={{ marginTop: '0.75rem' }}>
           File System &amp; Disk Management
         </h1>
         <p>
-          Master all six disk scheduling algorithms through live 2D and 3D simulations.
-          Step through each algorithm, inspect seek paths, and compare total head movement metrics.
+          Master all six disk scheduling algorithms. Learn the theory, compare their behavior, and jump into specific live 2D and 3D simulations.
         </p>
       </motion.header>
 
@@ -55,35 +64,30 @@ const Unit2 = () => {
         </div>
       </motion.section>
 
-      {/* Interactive Lab */}
-      <motion.section className={styles.labSection} custom={2} variants={fadeUp}>
-        <h2 className={styles.sectionTitle} style={{ fontSize: '1.4rem' }}>
-          Interactive Lab: Disk Scheduling Algorithms
+      {/* Algorithms Links Grid */}
+      <motion.section custom={2} variants={fadeUp} style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
+        <h2 className={styles.sectionTitle} style={{ fontSize: '1.4rem', marginBottom: '1.5rem' }}>
+          Explore Algorithms
         </h2>
-        
-        {/* Seek Formulas */}
-        <div style={{
-          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem',
-          marginBottom: '1.5rem', background: 'rgba(26,92,190,0.05)', padding: '1.25rem',
-          borderRadius: 'var(--border-radius-lg)', border: '1px solid var(--border-glow)'
-        }}>
-          <div>
-            <h4 style={{ color: 'var(--accent-primary)', fontSize: '0.85rem', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Total Seek Distance (TSD)</h4>
-            <div style={{ background: 'rgba(0,0,0,0.2)', padding: '0.6rem', borderRadius: '6px', textAlign: 'center', fontFamily: 'monospace', color: 'var(--text-primary)' }}>
-              TSD = Σ |headᵢ - headᵢ₋₁|
-            </div>
-            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '0.4rem' }}>Sum of absolute differences between consecutive track positions.</p>
-          </div>
-          <div>
-            <h4 style={{ color: 'var(--accent-primary)', fontSize: '0.85rem', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Average Seek Time (AST)</h4>
-            <div style={{ background: 'rgba(0,0,0,0.2)', padding: '0.6rem', borderRadius: '6px', textAlign: 'center', fontFamily: 'monospace', color: 'var(--text-primary)' }}>
-              AST = TSD / n
-            </div>
-            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '0.4rem' }}>Where $n$ is the total number of serviced requests.</p>
-          </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+          {algorithms.map((algo) => (
+             <motion.div
+               key={algo.name}
+               onClick={() => navigate(`/os/disk-scheduling/${algo.name.toLowerCase()}`)}
+               whileHover={{ y: -5, borderColor: 'var(--accent-tertiary)', boxShadow: '0 8px 25px -10px rgba(212,160,23,0.3)' }}
+               className="glass-panel-md"
+               style={{ padding: '1.5rem', cursor: 'pointer', borderTop: '3px solid var(--accent-primary)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
+             >
+               <h3 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.2rem' }}>{algo.name}</h3>
+               <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.5 }}>
+                 {algo.desc}
+               </p>
+               <div style={{ marginTop: 'auto', paddingTop: '1rem', color: 'var(--accent-tertiary)', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                 Launch Simulation ➔
+               </div>
+             </motion.div>
+          ))}
         </div>
-
-        <DiskSimulation />
       </motion.section>
 
       {/* ---- Comparison Table ---- */}
