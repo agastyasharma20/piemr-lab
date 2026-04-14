@@ -8,8 +8,16 @@ const coaTopics = [
   { path: '/coa/io-organization', title: 'I/O Organization', desc: 'Bus architectures, DMA controllers, and high-speed memory interfaces.', icon: HardDrive, color: 'var(--accent-primary)' },
   { path: '/coa/memory-organization', title: 'Memory Organization', desc: 'Cache mapping, set-associative designs, and virtual memory translation.', icon: BookOpen, color: 'var(--warning)' },
   { path: '/coa/multiprocessors', title: 'Multiprocessors', desc: 'Pipelining hazards, RISC vs CISC, and parallel supercomputing.', icon: Network, color: 'var(--success)' },
-  { path: '/coa/experiments', title: 'Logic & Assembly Labs', desc: 'Write 8085 Assembly code and interact with SVG-powered logic circuits.', icon: Zap, color: 'var(--text-primary)' },
+  { path: '/coa/experiments', title: 'Logic & Assembly Labs', desc: 'Write 8085 Assembly code and interact with SVG-powered logic circuits.', icon: Zap, color: 'var(--accent-primary)' },
+  { path: '/coa/circuit-simulator', title: 'Interactive Circuit Sandbox', desc: 'Drag, drop, and wire any free-form digital logic topology you want in a fully unconstrained sandbox.', icon: Zap, color: '#39ff14' },
 ];
+
+const StatItem = ({ label, value, color }: any) => (
+  <div style={{ padding: '1rem 1.5rem', background: 'rgba(0,0,0,0.2)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', textAlign: 'center' }}>
+    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.25rem' }}>{label}</div>
+    <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: color }}>{value}</div>
+  </div>
+);
 
 const COADashboard = () => {
   const navigate = useNavigate();
@@ -22,18 +30,28 @@ const COADashboard = () => {
       transition={{ duration: 0.5 }}
     >
       <header style={{
-        padding: '3rem',
-        background: 'linear-gradient(135deg, rgba(212,160,23,0.15) 0%, rgba(13,25,48,0.8) 100%)',
-        borderRadius: 'var(--border-radius-xl)',
+        padding: '4rem 2rem',
+        background: 'linear-gradient(135deg, rgba(212,160,23,0.1) 0%, rgba(13,25,48,0.8) 100%)',
+        borderRadius: '32px',
         border: '1px solid var(--border-glow)',
-        textAlign: 'center'
+        textAlign: 'center',
+        position: 'relative',
+        overflow: 'hidden'
       }}>
-        <h1 className="text-gradient" style={{ fontSize: '3rem', marginBottom: '1rem', background: 'linear-gradient(135deg, #fff 0%, var(--accent-tertiary) 100%)', WebkitBackgroundClip: 'text' }}>
-          Computer Architecture
-        </h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '700px', margin: '0 auto' }}>
-          Discover the hardware and logic that power modern computing. Choose a theoretical topic or enter the labs.
-        </p>
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <h1 className="text-gradient" style={{ fontSize: '3.5rem', marginBottom: '1rem', fontFamily: 'var(--font-heading)' }}>
+            Architecture Hub
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '700px', margin: '0 auto 2.5rem' }}>
+            A precision-engineered dashboard for mastering computer organization and hardware logic.
+          </p>
+
+          <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <StatItem label="Modules" value="06" color="var(--accent-tertiary)" />
+            <StatItem label="Active Labs" value="10" color="#39ff14" />
+            <StatItem label="Simulator" value="Ready" color="var(--info)" />
+          </div>
+        </div>
       </header>
 
       <div style={{

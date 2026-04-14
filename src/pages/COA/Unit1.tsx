@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Share2, Cpu, HardDrive, LayoutTemplate, Activity } from 'lucide-react';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30, scale: 0.98 },
@@ -9,7 +10,7 @@ const fadeUp = {
 };
 
 const headerStyle = {
-  padding: '2rem 2.5rem',
+  padding: '2.5rem 3rem',
   background: 'linear-gradient(135deg, rgba(26,92,190,0.1) 0%, rgba(212,160,23,0.15) 100%)',
   borderRadius: 'var(--border-radius-xl)',
   border: '1px solid var(--border-glow)',
@@ -19,87 +20,159 @@ const headerStyle = {
 };
 
 const sectionTitleStyle = {
-  fontSize: '1.3rem',
+  fontSize: '1.4rem',
   fontWeight: 700,
-  color: 'var(--accent-secondary)',
+  color: 'var(--text-primary)',
   display: 'flex',
   alignItems: 'center',
   gap: '0.6rem',
-  marginBottom: '1rem',
+  marginBottom: '1.5rem',
+  borderBottom: '2px solid rgba(255,255,255,0.05)',
+  paddingBottom: '0.75rem'
 };
 
 const Unit1 = () => {
   return (
     <motion.div
-      style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', paddingBottom: '4rem' }}
+      style={{ display: 'flex', flexDirection: 'column', gap: '3rem', paddingBottom: '4rem' }}
       initial="hidden"
       animate="visible"
     >
-      {/* Header */}
+      {/* Dynamic Header */}
       <motion.header style={headerStyle} custom={0} variants={fadeUp}>
         <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
-
           <span className="badge badge-blue">Foundation</span>
+          <span className="badge badge-gold">Architecture</span>
         </div>
-        <h1 className="text-gradient">Basic Structure of Computer</h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', margin: '0.5rem 0 0', maxWidth: '650px' }}>
-          Understanding the fundamental architecture, register organization, and instruction formats that power modern desktop computers.
+        <h1 className="text-gradient" style={{ fontSize: '2.5rem', margin: '0.5rem 0' }}>Basic Structure of Computer</h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', margin: 0, maxWidth: '800px', lineHeight: 1.6 }}>
+          Understanding the fundamental architecture, register organization, control units, system buses, and execution hardware that power modern desktops and processing architectures.
         </p>
       </motion.header>
 
-      {/* Core Components */}
-      <motion.div custom={1} variants={fadeUp}
-        className="glass-panel-md"
-        style={{ padding: '2rem', border: '1px solid var(--border-glow)' }}
-      >
+      {/* Intro: Desktop vs CPU Topology */}
+      <motion.div custom={1} variants={fadeUp} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+         <div className="glass-panel-md" style={{ padding: '2rem' }}>
+            <h3 style={{ color: 'var(--accent-tertiary)', fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <LayoutTemplate size={20} /> Desktop Ecosystem
+            </h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.7 }}>
+              The high-level structure of a computer comprises the Central Processing Unit (CPU), Main Memory (RAM), and I/O Modules. These components are interconnected via the <strong>System Bus</strong> to form the operational environment of a desktop.
+            </p>
+         </div>
+         <div className="glass-panel-md" style={{ padding: '2rem' }}>
+            <h3 style={{ color: 'var(--success)', fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Cpu size={20} /> CPU Anatomy
+            </h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.7 }}>
+              Internally, the CPU is divided into the <strong>Arithmetic Logic Unit (ALU)</strong> for executions, the <strong>Control Unit (CU)</strong> for orchestration, and a dedicated <strong>Register Array</strong> for ultra-fast local data caching.
+            </p>
+         </div>
+      </motion.div>
+
+      {/* Control Unit: Hardwired vs Micro-programmed */}
+      <motion.div custom={2} variants={fadeUp} className="glass-panel-md" style={{ padding: '2.5rem' }}>
         <h2 style={sectionTitleStyle}>
-          <span style={{ width: 4, height: '1.2em', background: 'var(--accent-tertiary)', borderRadius: 4, display: 'inline-block' }} />
-          CPU & General Register Organization
+          <Activity color="var(--danger)" /> Control Unit (CU) Design
         </h2>
-        <p style={{ lineHeight: 1.8, color: 'var(--text-primary)', fontSize: '1.02rem', marginBottom: '1.5rem' }}>
-          The Central Processing Unit (CPU) contains a set of registers, an Arithmetic Logic Unit (ALU), and a Control Unit. 
-          To minimize memory access bottlenecks, the CPU uses an internal register file for temporary data storage.
+        <p style={{ color: 'var(--text-primary)', marginBottom: '2rem', fontSize: '1.05rem', lineHeight: 1.6 }}>
+          The Control Unit generates the timing and control signals required to execute instructions. There are two highly distinct engineering paradigms used to construct a CU.
         </p>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-          {[
-            { title: 'Program Counter (PC)', text: 'Holds the memory address of the next instruction to be fetched.' },
-            { title: 'Instruction Register (IR)', text: 'Holds the instruction currently being decoded or executed.' },
-            { title: 'Memory Address Register (MAR)', text: 'Holds the address of the memory location being accessed.' },
-            { title: 'Memory Buffer Register (MBR)', text: 'Holds the data being written to or read from memory.' }
-          ].map((reg, idx) => (
-             <div key={idx} style={{ background: 'rgba(255,255,255,0.03)', padding: '1.2rem', borderRadius: '8px', borderLeft: '3px solid var(--accent-primary)' }}>
-               <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.4rem' }}>{reg.title}</h4>
-               <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0 }}>{reg.text}</p>
-             </div>
-          ))}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+           <div style={{ background: 'rgba(239, 68, 68, 0.05)', padding: '1.5rem', borderRadius: '12px', borderLeft: '4px solid var(--danger)' }}>
+             <h4 style={{ color: 'var(--danger)', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Hardwired Control Unit</h4>
+             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>
+               Built using strictly physical logic gates, flip-flops, and decoder circuits. Control signals are generated by combining specific hardware conditions.
+             </p>
+             <ul style={{ color: 'var(--text-primary)', fontSize: '0.85rem', marginTop: '1rem', paddingLeft: '1.2rem', lineHeight: 1.6 }}>
+               <li><strong>Speed:</strong> Extremely Fast.</li>
+               <li><strong>Flexibility:</strong> Very low; any ISA change requires physical hardware remanufacturing.</li>
+               <li><strong>Usage:</strong> RISC Processors.</li>
+             </ul>
+           </div>
+           
+           <div style={{ background: 'rgba(37,99,235,0.05)', padding: '1.5rem', borderRadius: '12px', borderLeft: '4px solid #60a5fa' }}>
+             <h4 style={{ color: '#60a5fa', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Micro-programmed Control Unit</h4>
+             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>
+               Control algorithms are localized as "micro-code" inside a special Control Memory (ROM). The hardware fetches these micro-instructions dynamically.
+             </p>
+             <ul style={{ color: 'var(--text-primary)', fontSize: '0.85rem', marginTop: '1rem', paddingLeft: '1.2rem', lineHeight: 1.6 }}>
+               <li><strong>Speed:</strong> Slower (requires ROM access per step).</li>
+               <li><strong>Flexibility:</strong> High; ISA can be updated simply by flashing new ROM sequences.</li>
+               <li><strong>Usage:</strong> CISC Processors (Intel x86).</li>
+             </ul>
+           </div>
         </div>
       </motion.div>
 
-      {/* Instruction Cycle */}
-      <motion.div custom={2} variants={fadeUp} style={{
-        background: 'rgba(212,160,23,0.05)',
-        padding: '2rem',
+      {/* System Buses */}
+      <motion.div custom={3} variants={fadeUp} style={{
+        background: 'rgba(16,185,129,0.05)',
+        padding: '2.5rem',
         borderRadius: 'var(--border-radius-xl)',
-        border: '1px solid var(--border-gold)',
+        border: '1px solid rgba(16,185,129,0.2)',
       }}>
-        <h2 style={{ ...sectionTitleStyle, color: 'var(--accent-tertiary)' }}>
-          <span style={{ width: 4, height: '1.2em', background: 'var(--accent-tertiary)', borderRadius: 4, display: 'inline-block' }} />
-          The Fetch-Execute Cycle
+        <h2 style={{ ...sectionTitleStyle, color: 'white', borderColor: 'rgba(16,185,129,0.2)' }}>
+          <Share2 color="var(--success)" /> System Buses
         </h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.5rem' }}>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <div style={{ background: 'var(--accent-tertiary)', color: '#000', width: 30, height: 30, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold' }}>1</div>
-            <div><strong style={{color: 'var(--text-primary)'}}>Fetch:</strong> PC → MAR. Memory reads instruction at MAR and loads it into MBR, then transfer to IR. PC increments.</div>
-          </div>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <div style={{ background: 'var(--accent-tertiary)', color: '#000', width: 30, height: 30, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold' }}>2</div>
-            <div><strong style={{color: 'var(--text-primary)'}}>Decode:</strong> Control Unit decodes the instruction inside the IR to determine the operation.</div>
-          </div>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <div style={{ background: 'var(--accent-tertiary)', color: '#000', width: 30, height: 30, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold' }}>3</div>
-            <div><strong style={{color: 'var(--text-primary)'}}>Execute:</strong> Emits control signals to route data through the ALU or perform I/O operations.</div>
-          </div>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '1rem' }}>
+          A bus is a shared communication pathway consisting of multiple wires. It allows various sub-systems to seamlessly transfer binary data. The primary taxonomy consists of three critical lines:
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+           {[
+             { title: 'Data Bus', color: '#10b981', desc: 'Carries the actual payload data being written or read. Bidirectional. The width (e.g., 64-bit) determines peak throughput.' },
+             { title: 'Address Bus', color: '#f59e0b', desc: 'Indicates the origin or destination memory block. Unidirectional (CPU to Memory/IO). Its width limits maximum addressable RAM space.' },
+             { title: 'Control Bus', color: '#3b82f6', desc: 'Transmits command signals like Memory-Read, Memory-Write, and I/O-Read to trigger synchronous operations across the motherboard.' }
+           ].map((bus) => (
+              <div key={bus.title} style={{ padding: '1.25rem', background: '#0a0f1c', borderRadius: '12px', borderTop: `4px solid ${bus.color}` }}>
+                 <h4 style={{ color: bus.color, marginBottom: '0.5rem' }}>{bus.title}</h4>
+                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: 1.6, margin: 0 }}>{bus.desc}</p>
+              </div>
+           ))}
+        </div>
+      </motion.div>
+
+      {/* General Register Organization */}
+      <motion.div custom={4} variants={fadeUp} className="glass-panel-md" style={{ padding: '2.5rem' }}>
+        <h2 style={sectionTitleStyle}>
+          <HardDrive color="var(--info)" /> Register Layout & Execution Cycle
+        </h2>
+        <p style={{ color: 'var(--text-primary)', marginBottom: '1.5rem', fontSize: '1.02rem' }}>
+          Registers form the apex of the memory hierarchy graph. To minimize latencies, operands must be fetched from RAM into internal registers before ALU interaction.
+        </p>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginBottom: '2.5rem' }}>
+          {[
+            { title: 'Program Counter (PC)', text: 'Holds the memory address of the next instruction to be fetched.' },
+            { title: 'Instruction Register (IR)', text: 'Holds the instruction currently being decoded or executed.' },
+            { title: 'Memory Address Register (MAR)', text: 'Holds the exact absolute address of the RAM block being targeted.' },
+            { title: 'Memory Buffer Register (MBR/MDR)', text: 'Holds the payload data entering or exiting the memory.' },
+            { title: 'Accumulator (AC)', text: 'General-purpose register storing intermediate ALU execution results.' }
+          ].map((reg, idx) => (
+             <div key={idx} style={{ background: 'rgba(255,255,255,0.03)', padding: '1.25rem', borderRadius: '8px', borderLeft: '3px solid var(--accent-primary)' }}>
+               <h4 style={{ color: 'white', marginBottom: '0.4rem', fontSize: '0.95rem' }}>{reg.title}</h4>
+               <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: 0 }}>{reg.text}</p>
+             </div>
+          ))}
+        </div>
+
+        <div style={{ background: 'rgba(0,0,0,0.3)', padding: '2rem', borderRadius: '12px' }}>
+            <h4 style={{ color: 'var(--accent-tertiary)', marginBottom: '1rem' }}>The Instruction Cycle (Fetch ➝ Decode ➝ Execute)</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <div style={{ background: 'var(--accent-tertiary)', color: '#000', width: 28, height: 28, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '0.85rem' }}>1</div>
+                <div style={{ fontSize: '0.95rem' }}><strong style={{color: 'white'}}>Fetch Phase:</strong> PC signals MAR. Memory accesses block and sends data via Data Bus to MBR, routed to IR. PC counter increments.</div>
+              </div>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <div style={{ background: 'var(--accent-tertiary)', color: '#000', width: 28, height: 28, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '0.85rem' }}>2</div>
+                <div style={{ fontSize: '0.95rem' }}><strong style={{color: 'white'}}>Decode Phase:</strong> Hardwired or Micro-programmed Control Unit strictly inspects IR constraints to prepare multiplexers.</div>
+              </div>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <div style={{ background: 'var(--accent-tertiary)', color: '#000', width: 28, height: 28, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '0.85rem' }}>3</div>
+                <div style={{ fontSize: '0.95rem' }}><strong style={{color: 'white'}}>Execute Phase:</strong> Signals direct the ALU. Computations execute and write back to Accumulator or RAM.</div>
+              </div>
+            </div>
         </div>
       </motion.div>
 

@@ -24,10 +24,18 @@ import COAUnit4 from './pages/COA/Unit4';
 import COAUnit5 from './pages/COA/Unit5';
 import COAExperiments from './pages/COA/Experiments';
 import COAExperimentDetails from './pages/COA/COAExperimentDetails';
+import LogicCanvas from './pages/COA/LogicCanvas';
 
 // Dashboards
 import OSDashboard from './pages/Dashboard/OSDashboard';
 import COADashboard from './pages/Dashboard/COADashboard';
+import ADADashboard from './pages/Dashboard/ADADashboard';
+import ComplexityHub from './pages/ADA/ComplexityHub';
+import ADALabDetails from './pages/ADA/ADALabDetails';
+import ADATopicHub from './pages/ADA/ADATopicHub';
+
+
+
 
 function App() {
   return (
@@ -61,9 +69,20 @@ function App() {
           <Route path="/coa/multiprocessors" element={<COAUnit5 />} />
           <Route path="/coa/experiments" element={<COAExperiments />} />
           <Route path="/coa/experiments/:id" element={<COAExperimentDetails />} />
+          <Route path="/coa/circuit-simulator" element={<LogicCanvas expTitle="Circuit Sandbox (Open Workbench)" />} />
 
-          <Route path="/os/developer" element={<Developer />} />
-          <Route path="/coa/developer" element={<Developer />} />
+           {/* ADA Module Routes */}
+          <Route path="/ada" element={<ADADashboard />} />
+          <Route path="/ada/experiments" element={<Experiments mode="ada" />} />
+          <Route path="/ada/experiments/:id" element={<ADALabDetails />} />
+          <Route path="/ada/complexity" element={<ComplexityHub />} />
+          <Route path="/ada/:topicId" element={<ADATopicHub />} />
+          <Route path="/ada/:topicId/:subTopicId" element={<ADATopicHub />} />
+
+
+
+          {/* Global Pages */}
+          <Route path="/about" element={<Developer />} />
         </Routes>
       </Layout>
     </Router>

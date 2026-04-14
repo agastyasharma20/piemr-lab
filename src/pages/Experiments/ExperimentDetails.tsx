@@ -13,6 +13,7 @@ import ProducerConsumer from './simulations/ProducerConsumer';
 import ReaderWriter from './simulations/ReaderWriter';
 import DiningPhilosophers from './simulations/DiningPhilosophers';
 import BankersAlgorithm from './simulations/BankersAlgorithm';
+import { renderOSExperimentTheory } from './OSTheoryContent';
 
 const ExperimentDetails = () => {
   const { id } = useParams();
@@ -105,7 +106,13 @@ const ExperimentDetails = () => {
             transition={{ duration: 0.2, ease: 'easeOut' }}
           >
             {activeTab === 'theory' && (
-              <div className={styles.theoryBox} dangerouslySetInnerHTML={{ __html: exp.theory }} />
+              <div className={styles.theoryWrapper}>
+                {renderOSExperimentTheory(exp.id)}
+                <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', opacity: 0.5 }}>
+                   <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>LEGACY TEXT RECORD</h4>
+                   <div className={styles.theoryBox} dangerouslySetInnerHTML={{ __html: exp.theory }} />
+                </div>
+              </div>
             )}
 
             {activeTab === 'algorithm' && (

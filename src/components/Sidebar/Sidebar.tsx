@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+
 import { NavLink, useLocation } from 'react-router-dom';
-import { Home, HardDrive, Database, Cpu, Network, BookOpen, User, Menu, X, GraduationCap, TerminalSquare, Zap, ChevronDown, ChevronRight, Compass } from 'lucide-react';
+import { Home, HardDrive, Database, Cpu, Network, BookOpen, User, Menu, X, GraduationCap, TerminalSquare, Zap, ChevronDown, ChevronRight, Compass, Search, Hash, GitBranch, Layers, Activity } from 'lucide-react';
+
+
 import styles from './Sidebar.module.css';
 
 const osNavItems = [
+  { path: '/', label: 'Main Platform Home', icon: Compass, section: null },
   { path: '/os', label: 'OS Dashboard', icon: Home, section: null },
   { 
     path: '/os/intro', 
@@ -60,10 +64,21 @@ const osNavItems = [
   { path: '/os/concurrency', label: 'Concurrency', icon: Network, section: null },
   { path: '/os/advanced-os', label: 'Advanced Concepts', icon: Compass, section: null },
   { path: '/os/experiments', label: 'Interactive Simulations', icon: TerminalSquare, section: 'Lab' },
-  { path: '/os/developer', label: 'About & Mentors', icon: User, section: 'Info' },
 ];
 
+const homeNavItems = [
+  { path: '/', label: 'Home', icon: Home, section: null },
+  { path: '/#subjects', label: 'Subjects', icon: BookOpen, section: null },
+  { path: '/#contact', label: 'Contact Us', icon: User, section: null },
+  { path: '/os', label: 'Operating Systems (OS)', icon: TerminalSquare, section: 'Quick Links' },
+  { path: '/coa', label: 'Computer Architecture', icon: Cpu, section: null },
+  { path: '/ada', label: 'ADA (Algorithms)', icon: GitBranch, section: null },
+  { path: '/about', label: 'About Us & Mentors', icon: User, section: 'Info' },
+];
+
+
 const coaNavItems = [
+  { path: '/', label: 'Main Platform Home', icon: Compass, section: null },
   { path: '/coa', label: 'COA Dashboard', icon: Home, section: null },
   { path: '/coa/basic-structure', label: 'Basic Structure', icon: BookOpen, section: 'Syllabus' },
   { path: '/coa/computer-arithmetic', label: 'Computer Arithmetic', icon: Cpu, section: null },
@@ -71,8 +86,94 @@ const coaNavItems = [
   { path: '/coa/memory-organization', label: 'Memory Organization', icon: BookOpen, section: null },
   { path: '/coa/multiprocessors', label: 'Multiprocessors', icon: Network, section: null },
   { path: '/coa/experiments', label: 'Logic & Assembly Labs', icon: Zap, section: 'Lab' },
-  { path: '/coa/developer', label: 'About & Mentors', icon: User, section: 'Info' },
+  { path: '/coa/circuit-simulator', label: 'Circuit Sandbox', icon: Zap, section: null },
 ];
+
+const adaNavItems = [
+  { path: '/', label: 'Main Platform Home', icon: Compass, section: null },
+  { path: '/ada', label: 'ADA Dashboard', icon: Home, section: null },
+  { 
+    path: '/ada/fundamentals', 
+    label: 'Fundamentals', 
+    icon: Search, 
+    section: 'Syllabus',
+    subItems: [
+       { path: '/ada/intro', label: 'Analysis Intro' },
+       { path: '/ada/asymptotic', label: 'Asymptotic Notations' },
+       { path: '/ada/recurrence', label: 'Recurrence Relations' }
+    ]
+  },
+  { 
+    path: '/ada/divide-conquer', 
+    label: 'Divide & Conquer', 
+    icon: Network, 
+    subItems: [
+       { path: '/ada/divide-conquer/intro', label: 'D&C Strategy' },
+       { path: '/ada/divide-conquer/binary-search', label: 'Binary Search' },
+       { path: '/ada/divide-conquer/merge-sort', label: 'Merge Sort' },
+       { path: '/ada/divide-conquer/quick-sort', label: 'Quick Sort' }
+    ]
+  },
+  { 
+    path: '/ada/search-sort', 
+    label: 'Searching & Sorting', 
+    icon: Hash, 
+    subItems: [
+       { path: '/ada/searching', label: 'Searching Logic' },
+       { path: '/ada/sorting', label: 'Sorting Logic' },
+       { path: '/ada/comparison', label: 'Complexity Table' }
+    ]
+  },
+  { 
+    path: '/ada/greedy', 
+    label: 'Greedy Strategy', 
+    icon: GitBranch, 
+    subItems: [
+       { path: '/ada/greedy/intro', label: 'Optimization Basics' },
+       { path: '/ada/greedy/huffman', label: 'Huffman Coding' },
+       { path: '/ada/greedy/mst', label: 'Minimum Spanning Trees' },
+       { path: '/ada/greedy/shortest-path', label: 'Dijkstra Logic' },
+       { path: '/ada/greedy/knapsack', label: 'Fractional Knapsack' }
+    ]
+  },
+  { 
+    path: '/ada/dp', 
+    label: 'Dynamic Programming', 
+    icon: Layers, 
+    subItems: [
+       { path: '/ada/dp/knapsack', label: '0/1 Knapsack' },
+       { path: '/ada/dp/multistage', label: 'Multistage Graphs' },
+       { path: '/ada/dp/floyd', label: 'All-Pairs Shortest Path' },
+       { path: '/ada/dp/reliability', label: 'Reliability Design' }
+    ]
+  },
+  {
+    path: '/ada/backtracking',
+    label: 'Backtracking & B&B',
+    icon: Activity,
+    subItems: [
+       { path: '/ada/backtracking', label: 'Backtracking Logic' },
+       { path: '/ada/8-queens', label: '8-Queens Problem' },
+       { path: '/ada/hamiltonian', label: 'Hamiltonian Cycle' },
+       { path: '/ada/branch-bound', label: 'Branch & Bound' }
+    ]
+  },
+  {
+    path: '/ada/advanced-structures',
+    label: 'Advanced Structures',
+    icon: Database,
+    subItems: [
+       { path: '/ada/trees', label: 'Trees (BST, AVL)' },
+       { path: '/ada/traversals', label: 'Graph Traversals' },
+       { path: '/ada/graph-rep', label: 'Graph Representations' },
+       { path: '/ada/npc', label: 'NP-Completeness' }
+    ]
+  },
+  { path: '/ada/experiments', label: 'Algorithmic Labs', icon: Zap, section: 'Lab' },
+  { path: '/ada/complexity', label: 'Complexity Visualizer', icon: Activity, section: null },
+];
+
+
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -84,9 +185,13 @@ const Sidebar = () => {
     '/os/memory-management': location.pathname.startsWith('/os/memory-management'),
   });
 
+  const isHome = location.pathname === '/' || location.pathname === '/about';
   const isCOA = location.pathname.startsWith('/coa');
-  const activeNavItems = isCOA ? coaNavItems : osNavItems;
-  const moduleTitle = isCOA ? 'COA Laboratory' : 'OS Laboratory';
+  const isADA = location.pathname.startsWith('/ada');
+  
+  const activeNavItems = isHome ? homeNavItems : (isCOA ? coaNavItems : (isADA ? adaNavItems : osNavItems));
+  const moduleTitle = isHome ? 'Home Navigation' : (isCOA ? 'COA Laboratory' : (isADA ? 'ADA Learning Hub' : 'OS Laboratory'));
+
 
   const toggleSubmenu = (path: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -124,7 +229,9 @@ const Sidebar = () => {
               className={styles.logo}
             />
           </a>
-          <div className={styles.logoTitle}>PIEMR Virtual Lab</div>
+          <NavLink to="/" style={{ textDecoration: 'none' }}>
+             <div className={styles.logoTitle} style={{ color: 'white', cursor: 'pointer' }}>PIEMR Virtual Lab</div>
+          </NavLink>
           <div style={{
             display: 'flex', alignItems: 'center', gap: '6px',
             fontSize: '0.72rem', color: 'var(--accent-tertiary)',
@@ -140,8 +247,11 @@ const Sidebar = () => {
         {/* Navigation */}
         <nav className={styles.nav}>
           {(() => {
-            let lastSection: string | null = undefined as any;
-            return activeNavItems.map((item) => {
+            let lastSection: string | null = null;
+            return activeNavItems.map((item: any) => {
+
+
+
               const Icon = item.icon;
               const showSection = item.section !== lastSection;
               lastSection = item.section;
