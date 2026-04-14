@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import styles from './Unit2.module.css';
+import { ExternalLink, HelpCircle } from 'lucide-react';
+import { YouTubePiP } from '../../components/common/YouTubePiP';
+import { OS_VIDEOS } from '../../data/subjectVideoData';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -183,6 +186,37 @@ const Unit2 = () => {
           </p>
         </motion.div>
       </motion.section>
+      {/* References */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+        {OS_VIDEOS['disk-scheduling'].refs?.map((ref, i) => (
+          <a key={i} href={ref.url} target="_blank" rel="noopener noreferrer"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', padding: '1rem 1.2rem', background: 'rgba(37,99,235,0.06)', border: '1px solid rgba(37,99,235,0.18)', borderRadius: '12px', color: 'var(--accent-primary)', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 500 }}>
+            <ExternalLink size={14} />{ref.label}
+          </a>
+        ))}
+      </div>
+
+      {/* Interview Questions */}
+      <div className="glass-panel-md" style={{ padding: '2.5rem', borderTop: '4px solid var(--warning)', marginTop: '1rem' }}>
+        <h2 style={{ fontSize: '1.4rem', fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
+          <HelpCircle color="var(--warning)" size={22} /> Interview Questions
+        </h2>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '1.5rem' }}>Disk scheduling questions from GATE & technical interviews.</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+          {OS_VIDEOS['disk-scheduling'].interviewQs?.map((q, i) => (
+            <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', padding: '1rem 1.2rem', background: 'rgba(245,158,11,0.05)', borderRadius: '10px', border: '1px solid rgba(245,158,11,0.12)' }}>
+              <span style={{ color: 'var(--warning)', fontWeight: 700, flexShrink: 0 }}>Q{i + 1}</span>
+              <span style={{ color: '#e2e8f0', lineHeight: 1.6, fontSize: '0.92rem' }}>{q}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <YouTubePiP
+        videoId={OS_VIDEOS['disk-scheduling'].videoId}
+        videoTitle={OS_VIDEOS['disk-scheduling'].videoTitle}
+        color="var(--accent-primary)"
+      />
     </motion.div>
   );
 };

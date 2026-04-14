@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
-import { Share2, Cpu, HardDrive, LayoutTemplate, Activity } from 'lucide-react';
+import { Share2, Cpu, HardDrive, LayoutTemplate, Activity, ExternalLink, HelpCircle } from 'lucide-react';
+import { YouTubePiP } from '../../components/common/YouTubePiP';
+import { COA_VIDEOS } from '../../data/subjectVideoData';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30, scale: 0.98 },
@@ -175,6 +177,41 @@ const Unit1 = () => {
             </div>
         </div>
       </motion.div>
+
+      {/* Reference Links */}
+      <motion.div custom={5} variants={fadeUp} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
+        {COA_VIDEOS['basic-structure'].refs?.map((ref, i) => (
+          <a key={i} href={ref.url} target="_blank" rel="noopener noreferrer"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', padding: '1rem 1.2rem', background: 'rgba(37,99,235,0.06)', border: '1px solid rgba(37,99,235,0.18)', borderRadius: '12px', color: 'var(--accent-primary)', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 500, transition: 'all 0.15s' }}
+            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37,99,235,0.14)')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'rgba(37,99,235,0.06)')}>
+            <ExternalLink size={14} style={{ flexShrink: 0 }} />{ref.label}
+          </a>
+        ))}
+      </motion.div>
+
+      {/* Interview Questions */}
+      <motion.div custom={6} variants={fadeUp} className="glass-panel-md" style={{ padding: '2.5rem', borderTop: '4px solid var(--warning)' }}>
+        <h2 style={{ fontSize: '1.4rem', fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
+          <HelpCircle color="var(--warning)" size={22} /> Interview Questions
+        </h2>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '1.5rem' }}>Top questions asked by Google, Amazon, Microsoft for COA.</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+          {COA_VIDEOS['basic-structure'].interviewQs?.map((q, i) => (
+            <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', padding: '1rem 1.2rem', background: 'rgba(245,158,11,0.05)', borderRadius: '10px', border: '1px solid rgba(245,158,11,0.12)' }}>
+              <span style={{ color: 'var(--warning)', fontWeight: 700, flexShrink: 0, fontSize: '0.95rem' }}>Q{i + 1}</span>
+              <span style={{ color: '#e2e8f0', lineHeight: 1.6, fontSize: '0.92rem' }}>{q}</span>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Gate Smashers PiP */}
+      <YouTubePiP
+        videoId={COA_VIDEOS['basic-structure'].videoId}
+        videoTitle={COA_VIDEOS['basic-structure'].videoTitle}
+        color="var(--accent-tertiary)"
+      />
 
     </motion.div>
   );
