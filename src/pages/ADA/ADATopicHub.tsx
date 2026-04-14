@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 
 import { ParticleBackground } from '../../components/common/InteractiveEffects';
+import { YouTubePiP } from '../../components/common/YouTubePiP';
 import { TOPIC_CONTENT } from '../../data/adaTopicHubData';
 import { TopicVisualizer } from './TopicVisualizer';
 
@@ -63,6 +64,15 @@ export const ADATopicHub = () => {
       style={{ padding: '3rem 2rem', maxWidth: '1400px', margin: '0 auto', color: 'white' }}
     >
       <ParticleBackground count={12} color={topic.color} />
+
+      {/* Floating Gate Smashers PiP Video */}
+      {topic.videoId && (
+        <YouTubePiP
+          videoId={topic.videoId}
+          videoTitle={topic.videoTitle}
+          color={topic.color}
+        />
+      )}
 
       {/* Header */}
       <header style={{ marginBottom: '3rem' }}>
