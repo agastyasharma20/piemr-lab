@@ -1,163 +1,540 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 80vh;
-  padding: 2rem;
+/* ═══════════════════════════════════════════════════
+   ABOUT US — Premium Leadership Page v2
+   High-fidelity glassmorphism + clean hierarchy
+   ═══════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+.pageWrapper {
+  min-height: 100vh;
+  padding: 3rem 1.5rem 5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  font-family: 'Inter', sans-serif;
 }
 
-.introText {
+/* ── Page Header ── */
+.pageHeader {
   text-align: center;
-  max-width: 600px;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
+  padding-top: 1rem;
 }
 
-.teamGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  width: 100%;
-  max-width: 900px;
-}
-
-@media (min-width: 768px) {
-  .teamGrid {
-    flex-direction: row;
-    justify-content: center;
-  }
-}
-
-.profileCard {
-  flex: 1;
-  padding: 2.5rem 2rem;
-  display: flex;
-  flex-direction: column;
+.pageBadge {
+  display: inline-flex;
   align-items: center;
-  text-align: center;
-  gap: 1.5rem;
-  background: var(--bg-tertiary);
-  border-radius: var(--border-radius-lg);
-  border: 1px solid var(--border-light);
+  gap: 0.5rem;
+  padding: 0.4rem 1.1rem;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #818cf8;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  margin-bottom: 1.2rem;
+}
+
+.pageTitle {
+  font-size: 3.2rem;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  margin: 0 0 0.8rem;
+  background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 40%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+}
+
+.pageSubtitle {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.35);
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  max-width: 550px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── Section Labels ── */
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.sectionLabel::before {
+  content: '';
+  width: 3px;
+  height: 24px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #818cf8, #6366f1);
+  flex-shrink: 0;
+}
+
+.sectionLabel h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: -0.2px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════════════
+   LEAD CARD — Agastya (Prominent Hero Card)
+   ═══════════════════════════════════════════════════ */
+
+.leadSection {
+  margin-bottom: 2rem;
+}
+
+.leadCard {
+  display: flex;
+  gap: 2.5rem;
+  padding: 2.5rem 3rem;
+  background: linear-gradient(135deg, rgba(15, 20, 45, 0.85), rgba(20, 25, 55, 0.7));
+  backdrop-filter: blur(32px);
+  border-radius: 28px;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow:
+    0 0 0 1px rgba(99, 102, 241, 0.06),
+    0 24px 80px -16px rgba(0, 0, 0, 0.65),
+    0 0 60px -20px rgba(99, 102, 241, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
   position: relative;
   overflow: hidden;
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
-.profileCard:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--shadow-glow);
-  border-color: var(--accent-primary);
-}
-
-.profileCard::before {
+.leadCard::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 6px;
-  background: linear-gradient(90deg, var(--accent-primary), var(--accent-tertiary));
+  height: 2px;
+  background: linear-gradient(90deg, transparent 5%, #818cf8 30%, #a78bfa 50%, #818cf8 70%, transparent 95%);
 }
 
-.avatarContainer {
-  position: relative;
-  width: 160px;
-  height: 160px;
+.leadCard::after {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 200px; height: 200px;
   border-radius: 50%;
-  padding: 6px;
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-tertiary));
-  margin-bottom: 0.5rem;
-  box-shadow: 0 0 30px rgba(0,0,0,0.4);
+  background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.leadAvatarWrap {
+  flex-shrink: 0;
+  width: 130px;
+  height: 130px;
+  border-radius: 22px;
+  padding: 3px;
+  background: linear-gradient(145deg, rgba(99,102,241,0.5), rgba(139,92,246,0.35), rgba(99,102,241,0.2));
+  box-shadow: 0 8px 32px -8px rgba(99,102,241,0.3);
+}
+
+.leadAvatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+  display: block;
+  border: 3px solid rgba(15, 20, 40, 0.95);
+}
+
+.leadInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.leadName {
+  font-size: 1.85rem;
+  font-weight: 900;
+  margin: 0;
+  background: linear-gradient(135deg, #ffffff, #e0e7ff, #c7d2fe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.7px;
+  line-height: 1.15;
+}
+
+.leadRole {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.leadBadges {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  margin-top: 0.2rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.45);
+}
+
+.badgeVerified {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.06);
+  border-color: rgba(52, 211, 153, 0.12);
+}
+
+.badgePremium {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.06);
+  border-color: rgba(251, 191, 36, 0.12);
+}
+
+.leadLinks {
+  display: flex;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.linkPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.42rem 0.85rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.45);
+  transition: all 0.2s ease;
+}
+
+.linkPill:hover {
+  background: rgba(255,255,255,0.07);
+  color: white;
+  border-color: rgba(255,255,255,0.12);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* ═══════════════════════════════════════════════════
+   ASSOCIATE CARD — Pralambika (Clean, aligned)
+   ═══════════════════════════════════════════════════ */
+
+.associateSection {
+  margin-bottom: 3rem;
+}
+
+.associateCard {
+  display: flex;
+  gap: 1.8rem;
+  padding: 1.8rem 2.2rem;
+  background: rgba(15, 20, 40, 0.45);
+  backdrop-filter: blur(20px);
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 12px 40px -10px rgba(0,0,0,0.35);
+  transition: all 0.3s ease;
+  align-items: center;
+  max-width: 550px;
+}
+
+.associateCard:hover {
+  border-color: rgba(168, 85, 247, 0.15);
+  box-shadow: 0 16px 50px -10px rgba(0,0,0,0.45);
+}
+
+.assocAvatarWrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 18px;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(168,85,247,0.35), rgba(236,72,153,0.2));
+  flex-shrink: 0;
+  box-shadow: 0 6px 20px -6px rgba(168, 85, 247, 0.2);
+}
+
+.assocAvatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+  display: block;
+  border: 2px solid rgba(15, 20, 40, 0.95);
+}
+
+.assocInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.assocName {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.assocRole {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+.assocLinks {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+}
+
+/* ═══════════════════════════════════════════════════
+   CONNECTOR
+   ═══════════════════════════════════════════════════ */
+
+.connector {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+  height: 60px;
+  margin-bottom: 1rem;
+  pointer-events: none;
+  opacity: 0.5;
 }
 
-.profileCard:hover .avatarContainer {
-  transform: scale(1.05) rotate(5deg);
-  box-shadow: 0 0 40px rgba(var(--accent-primary-rgb, 37, 99, 235), 0.5);
+/* ═══════════════════════════════════════════════════
+   MENTOR GRID
+   ═══════════════════════════════════════════════════ */
+
+.mentorSection {
+  margin-bottom: 4rem;
 }
 
-.avatar {
+.mentorGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+.mentorCard {
+  display: flex;
+  gap: 1.4rem;
+  padding: 1.6rem 1.8rem;
+  background: rgba(15, 20, 40, 0.4);
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: all 0.3s ease;
+  align-items: center;
+}
+
+.mentorCard:hover {
+  border-color: rgba(251,191,36,0.12);
+  box-shadow: 0 12px 40px -10px rgba(0,0,0,0.35);
+}
+
+.mentorAvatarWrap {
+  flex-shrink: 0;
+  width: 68px;
+  height: 68px;
+  border-radius: 16px;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(251,191,36,0.3), rgba(245,158,11,0.15));
+  box-shadow: 0 6px 20px -6px rgba(251, 191, 36, 0.15);
+}
+
+.mentorAvatar {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
+  border-radius: 14px;
   object-fit: cover;
-  border: 4px solid var(--bg-tertiary);
-  background: var(--bg-secondary);
+  display: block;
+  border: 2px solid rgba(15, 20, 40, 0.95);
 }
 
-.roleBadge {
-  background: rgba(37, 99, 235, 0.2);
-  color: var(--accent-secondary);
-  padding: 0.25rem 1rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-}
-
-.mentorBadge {
-  background: rgba(245, 158, 11, 0.2);
-  color: var(--warning);
-}
-
-.detailsGrid {
+.mentorInfo {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  width: 100%;
+  gap: 0.3rem;
 }
 
-.detailItem {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.75rem;
-  background: rgba(0,0,0,0.2);
-  border-radius: var(--border-radius-sm);
-  border: 1px solid transparent;
-  transition: border-color var(--transition-fast);
-}
-
-.detailItem:hover {
-  border-color: var(--accent-secondary);
-}
-
-.label {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.value {
+.mentorName {
   font-size: 1rem;
-  color: var(--text-primary);
-  font-weight: 500;
-  word-break: break-all;
+  font-weight: 700;
+  color: rgba(255,255,255,0.88);
+  margin: 0;
+  letter-spacing: -0.2px;
 }
 
-.link {
-  color: var(--accent-secondary);
-  text-decoration: none;
-  transition: color var(--transition-fast);
+.mentorRole {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.3);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
 }
 
-.link:hover {
-  color: var(--accent-tertiary);
-  text-decoration: underline;
+.mentorLinks {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+  flex-wrap: wrap;
+}
+
+/* ═══════════════════════════════════════════════════
+   VISION SECTION — 3-column cards
+   ═══════════════════════════════════════════════════ */
+
+.visionSection {
+  margin-bottom: 4rem;
+}
+
+.visionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+
+.visionCard {
+  padding: 2rem 1.8rem;
+  background: rgba(15, 20, 40, 0.35);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.03);
+  transition: all 0.35s ease;
+}
+
+.visionCard:hover {
+  border-color: rgba(99,102,241,0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px -16px rgba(0,0,0,0.45);
+}
+
+.visionIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+  background: rgba(99,102,241,0.06);
+  border: 1px solid rgba(99,102,241,0.1);
+}
+
+.visionTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.88);
+  margin: 0 0 0.55rem;
+  letter-spacing: -0.2px;
+}
+
+.visionDesc {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.35);
+  margin: 0;
+  line-height: 1.65;
+}
+
+/* ═══════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════ */
+
+.footerLogo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(255,255,255,0.03);
+}
+
+.footerText {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .instLogo {
-  margin-top: 3rem;
-  height: 60px;
-  opacity: 0.8;
-  transition: opacity 0.3s;
+  height: 50px;
+  filter: grayscale(1) brightness(0.35);
+  opacity: 0.5;
+  transition: all 0.4s ease;
 }
 
 .instLogo:hover {
+  filter: grayscale(0) brightness(1);
   opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .leadCard {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .leadInfo {
+    align-items: center;
+  }
+
+  .leadBadges, .leadLinks {
+    justify-content: center;
+  }
+
+  .associateCard {
+    max-width: 100%;
+  }
+
+  .mentorGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .visionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pageTitle {
+    font-size: 2.2rem;
+  }
 }

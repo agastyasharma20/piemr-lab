@@ -18,11 +18,12 @@ import {
 } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 import styles from '../Experiments/ExperimentDetails.module.css';
+import { simulateCompilation } from '../../utils/SimulatedCompiler';
 
 const ADAExperimentDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'theory' | 'algorithm' | 'compiler' | 'quiz'>('theory');
+  const [activeTab, setActiveTab] = useState<'theory' | 'algorithm' | 'compiler' | 'quiz' | 'visual'>('theory');
   const [code, setCode] = useState('');
   const [predictMode, setPredictMode] = useState(false);
   const [prediction, setPrediction] = useState('');
@@ -115,40 +116,52 @@ const ADAExperimentDetails = () => {
   };
 
   const handleRun = () => {
+    if (!id) return;
     setIsRunning(true);
-    setConsoleOutput(["[System] Initializing Multi-Stage Verification...", "[Security] Scanning for code plagiarism..."]);
+    setConsoleOutput(["[System] Initializing Environment..."]);
     
-    const isDefault = code.includes('Type your solution here...') || code.length < 80;
+    // Check if default placeholder still exists
+    const isDefault = code.includes('Type your solution here...') || code.trim().length < 50;
 
-    // Multi-stage execution simulation for "Premium" feel
     setTimeout(() => {
       if (isDefault) {
         setConsoleOutput(prev => [
             ...prev, 
-            "[Compiler] ERROR: Missing core implementation logic.", 
-            "[Compiler] In function 'main': undefined reference to algorithmic block.",
-            "[System] Process finished with status: FAILED (1) - Please provide the algorithm."
+            "[Compiler] ERROR: Code buffer contains default placeholder.", 
+            "[Compiler] In function 'main': undefined reference to logic.",
+            "[System] Process finished with status: FAILED (1) - Logic Required."
         ]);
         setIsRunning(false);
         return;
       }
 
-      setConsoleOutput(prev => [...prev, "[Security] Plagiarism Check: PASSED (Match < 5%)", "[Sandbox] Allocating Secure Execution Environment..."]);
+      // Run Simulated Compiler logic
+      const result = simulateCompilation(id, code);
       
-      setTimeout(() => {
-        setConsoleOutput(prev => [...prev, "[Sandbox] Sandbox Allocated. Transferring Binary...", "[System] Executing logic on virtual node X-294..."]);
-        
+      // Step through logs for "Premium" feel
+      let delay = 0;
+      result.logs.forEach((log, index) => {
         setTimeout(() => {
-           setConsoleOutput(prev => [
-            ...prev, 
-            `[Output] Result for ${exp.title}: Success.`, 
-            `[Verification] Time: 0.24ms | Memory: 4.8MB`,
-            "[System] Process finished with status: SUCCESS (0)"
-          ]);
-           setIsRunning(false);
-        }, 1200);
-      }, 1000);
-    }, 1500);
+          setConsoleOutput(prev => [...prev, log]);
+          
+          // When we reach the final log, show output
+          if (index === result.logs.length - 1) {
+            if (result.success && result.output) {
+              setTimeout(() => {
+                setConsoleOutput(prev => [...prev, ...result.output!]);
+                if (result.metrics) {
+                   setConsoleOutput(prev => [...prev, `[Metrics] Verif-Time: ${result.metrics!.time} | Peak-RAM: ${result.metrics!.memory}`]);
+                }
+                setIsRunning(false);
+              }, 600);
+            } else {
+              setIsRunning(false);
+            }
+          }
+        }, delay);
+        delay += 600;
+      });
+    }, 1000);
   };
 
   const nextExp = adaExperiments[expIndex + 1];
@@ -230,6 +243,7 @@ const ADAExperimentDetails = () => {
       <div className={styles.tabs} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '12px', padding: '0.5rem' }}>
         {[
           { id: 'theory', label: 'Theory & Analogy', icon: BookOpen },
+          { id: 'visual', label: 'Visual Flow', icon: Zap },
           { id: 'algorithm', label: 'Algorithm', icon: Code },
           { id: 'compiler', label: 'Secure Sandbox', icon: Terminal },
           { id: 'quiz', label: 'Self-Assessment', icon: HelpCircle }
@@ -299,16 +313,82 @@ const ADAExperimentDetails = () => {
                           </div>
                           <div style={{ display: 'flex', justifyContent: 'space-between', color: '#9ca3af' }}>
                              <span>Main Loop/Recursion</span>
-                             <span style={{ color: 'var(--warning)', fontWeight: 'bold' }}>{exp.number === 6 || exp.number === 7 ? 'O(log N)' : 'O(N)'}</span>
+                             <span style={{ color: 'var(--warning)', fontWeight: 'bold' }}>{exp.number <= 7 ? 'O(log N)' : exp.number <= 12 ? 'O(N log N)' : 'O(N)'}</span>
                           </div>
                           <div style={{ display: 'flex', justifyContent: 'space-between', color: '#9ca3af' }}>
                              <span>Total Complexity</span>
-                             <span style={{ color: 'var(--accent-tertiary)', fontWeight: 'bold' }}>{exp.number === 6 || exp.number === 7 ? 'O(log N)' : 'O(N)'}</span>
+                             <span style={{ color: 'var(--accent-tertiary)', fontWeight: 'bold' }}>{exp.number <= 7 ? 'O(log N)' : exp.number <= 12 ? 'O(N log N)' : 'O(N)'}</span>
                           </div>
                        </div>
                     </div>
                   </div>
 
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'visual' && (
+              <div className="glass-panel-lg" style={{ padding: '3rem', minHeight: '600px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+                  <div>
+                    <h3 style={{ margin: 0, color: 'white' }}>Algorithm Control Flow</h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Execution pattern visualization for {exp.title}.</p>
+                  </div>
+                  <div className="badge badge-gold">PIEMR VISUAL ENGINE</div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '3rem' }}>
+                  <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '20px', padding: '2rem', border: '1px solid rgba(255,255,255,0.05)', position: 'relative', overflow: 'hidden' }}>
+                     {/* Dynamic Visual Graph Placeholder */}
+                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                        {[1, 2, 3, 4].map(step => (
+                           <motion.div 
+                              key={step}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: step * 0.2 }}
+                              style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}
+                           >
+                              <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: step === 1 ? 'var(--accent-primary)' : 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: step === 1 ? 'black' : 'white' }}>{step}</div>
+                              <div style={{ flex: 1, padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                 {step === 1 && `Initialize ${exp.title} parameters and data structures.`}
+                                 {step === 2 && `Iteratively evaluate conditional logic based on input N.`}
+                                 {step === 3 && `Apply ${exp.number > 15 ? 'Greedy / DP' : 'Divide & Conquer'} paradigm steps.`}
+                                 {step === 4 && `Return optimized result and terminate execution.`}
+                              </div>
+                           </motion.div>
+                        ))}
+                     </div>
+                     <motion.div 
+                        animate={{ opacity: [0.1, 0.3, 0.1] }}
+                        transition={{ repeat: Infinity, duration: 4 }}
+                        style={{ position: 'absolute', inset: 0, background: 'linear-gradient(45deg, transparent 0%, var(--accent-primary) 50%, transparent 100%)', opacity: 0.1, pointerEvents: 'none' }} 
+                     />
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                     <div className="glass-panel-sm" style={{ padding: '1.5rem', borderLeft: '4px solid var(--info)' }}>
+                        <h4 style={{ margin: '0 0 1rem 0', color: 'white' }}>Execution Heatmap</h4>
+                        <div style={{ height: '120px', display: 'flex', alignItems: 'flex-end', gap: '4px' }}>
+                           {[40, 70, 45, 90, 65, 30, 85, 20, 55, 75].map((h, i) => (
+                              <motion.div 
+                                 key={i}
+                                 initial={{ height: 0 }}
+                                 animate={{ height: `${h}%` }}
+                                 style={{ flex: 1, background: 'var(--info)', opacity: 0.3 + (h/100), borderRadius: '2px' }}
+                              />
+                           ))}
+                        </div>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '1rem', textAlign: 'center' }}>Instruction Density across cycles</p>
+                     </div>
+
+                     <div className="glass-panel-sm" style={{ padding: '1.5rem', borderLeft: '4px solid var(--accent-tertiary)' }}>
+                        <h4 style={{ margin: '0 0 0.5rem 0', color: 'white' }}>Paradigm</h4>
+                        <span className="badge badge-gold" style={{ fontSize: '1rem', padding: '0.5rem 1rem' }}>
+                           {exp.number <= 7 ? 'SEARCH' : exp.number <= 12 ? 'SORT' : exp.number <= 14 ? 'MATRIX' : exp.number <= 20 ? 'GREEDY/DP' : 'GRAPH'}
+                        </span>
+                     </div>
+                  </div>
                 </div>
               </div>
             )}

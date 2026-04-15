@@ -17,6 +17,12 @@ export interface TopicData {
   algorithms: { name: string; id: string; desc: string; complexity?: string }[];
   videoId?: string;       // Gate Smashers YouTube video ID
   videoTitle?: string;    // Display title for PiP widget
+  quiz?: {
+    question: string;
+    options: string[];
+    answer: number;
+    explanation: string;
+  }[];
 }
 
 export const TOPIC_CONTENT: Record<string, TopicData> = {
@@ -50,6 +56,20 @@ export const TOPIC_CONTENT: Record<string, TopicData> = {
     algorithms: [
       { name: '1D Array Operations', id: 'exp-1', desc: 'Linear iteration and access patterns.', complexity: 'O(N)' },
       { name: 'Matrix Operations', id: 'exp-4', desc: '2D nested loops and matrix math.', complexity: 'O(N²)' }
+    ],
+    quiz: [
+      {
+        question: "Which type of analysis is independent of hardware and compiler?",
+        options: ["A Posteriori", "A Priori", "Benchmarking", "System Testing"],
+        answer: 1,
+        explanation: "A Priori analysis is theoretical and focuses on growth rate (O-notation), making it machine-independent."
+      },
+      {
+        question: "In most algorithms, which component dominates the growth rate?",
+        options: ["Initialization", "Constant terms", "Input size (N)", "System overhead"],
+        answer: 2,
+        explanation: "The input size N is the primary factor that determines how an algorithm scales at infinity."
+      }
     ]
   },
 
@@ -81,6 +101,20 @@ export const TOPIC_CONTENT: Record<string, TopicData> = {
     algorithms: [
       { name: 'Linear Search Analysis', id: 'exp-5', desc: 'Prove O(N) via loop counting.', complexity: 'O(N)' },
       { name: 'Binary Search Analysis', id: 'exp-6', desc: 'Prove O(log N) via halving.', complexity: 'O(log N)' }
+    ],
+    quiz: [
+      {
+        question: "Which notation gives a tight bound (both upper and lower)?",
+        options: ["Big O", "Big Omega", "Big Theta", "Little o"],
+        answer: 2,
+        explanation: "Theta (Θ) notation requires the function to be bounded from both top and bottom by the same growth rate."
+      },
+      {
+        question: "If f(n) = 3n + 5, which is its Big O notation?",
+        options: ["O(1)", "O(n)", "O(n²)", "O(log n)"],
+        answer: 1,
+        explanation: "We ignore constant multiples (3) and lower order terms (5), leaving O(n)."
+      }
     ]
   },
 

@@ -18,6 +18,7 @@ import { ParticleBackground } from '../../components/common/InteractiveEffects';
 import { YouTubePiP } from '../../components/common/YouTubePiP';
 import { TOPIC_CONTENT } from '../../data/adaTopicHubData';
 import { TopicVisualizer } from './TopicVisualizer';
+import QuizComponent from '../Experiments/QuizComponent';
 
 const ALIASES: Record<string, string> = {
   'fundamentals': 'intro',
@@ -31,7 +32,7 @@ const ALIASES: Record<string, string> = {
 export const ADATopicHub = () => {
   const navigate = useNavigate();
   const { topicId, subTopicId } = useParams<{ topicId: string; subTopicId?: string }>();
-  const [activeSection, setActiveSection] = useState<'theory' | 'visual' | 'proofs' | 'interview'>('theory');
+  const [activeSection, setActiveSection] = useState<'theory' | 'visual' | 'proofs' | 'interview' | 'assessment'>('theory');
 
   let currentKey = subTopicId ? `${topicId}/${subTopicId}` : topicId || 'intro';
   if (!TOPIC_CONTENT[currentKey]) {
@@ -55,6 +56,7 @@ export const ADATopicHub = () => {
     { id: 'visual', label: 'Interactive Visual', icon: Zap },
     { id: 'proofs', label: 'Proofs & Math', icon: Code },
     { id: 'interview', label: 'Interview Prep', icon: HelpCircle },
+    { id: 'assessment', label: 'Self Assessment', icon: CheckCircle },
   ] as const;
 
   return (
@@ -308,6 +310,24 @@ export const ADATopicHub = () => {
                   ))}
                 </div>
               </div>
+            </div>
+          )}
+          {activeSection === 'assessment' && (
+            <div className="glass-panel-lg" style={{ padding: '3rem', borderTop: `6px solid var(--success)` }}>
+              <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                <div className="badge badge-gold" style={{ background: 'rgba(16,185,129,0.1)', color: 'var(--success)', borderColor: 'var(--success)' }}>KNOWLEDGE CHECK</div>
+                <h2 style={{ fontSize: '2rem', marginTop: '0.5rem' }}>Self-Assessment: {topic.title}</h2>
+                <p style={{ color: 'var(--text-secondary)' }}>Test your understanding of the core concepts of this topic.</p>
+              </div>
+              {topic.quiz && topic.quiz.length > 0 ? (
+                <QuizComponent questions={topic.quiz} />
+              ) : (
+                <div style={{ textAlign: 'center', padding: '3rem', background: 'rgba(0,0,0,0.2)', borderRadius: '16px', border: '1px dashed rgba(255,255,255,0.1)' }}>
+                  <HelpCircle size={48} color="var(--text-muted)" style={{ marginBottom: '1rem', opacity: 0.5 }} />
+                  <h3 style={{ color: 'var(--text-muted)' }}>Assessment Incoming</h3>
+                  <p style={{ color: 'var(--text-muted)', maxWidth: '400px', margin: '0.auto' }}>We are currently curating high-quality assessment questions for this specific topic. Check back soon!</p>
+                </div>
+              )}
             </div>
           )}
         </motion.div>

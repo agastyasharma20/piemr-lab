@@ -317,7 +317,7 @@ const Sidebar = () => {
         <div className={styles.sidebarFooter}>
           <span>PIEMR Virtual Lab</span>
           <span style={{ display: 'block', color: 'rgba(255,255,255,0.3)', fontSize: '0.7rem', marginTop: '2px' }}>
-            &copy; {new Date().getFullYear()} Agastya Sharma
+            &copy; {new Date().getFullYear()} Agastya Sharma & Pralambika Soni
           </span>
         </div>
       </aside>

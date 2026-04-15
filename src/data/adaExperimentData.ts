@@ -295,5 +295,49 @@ export const adaExperiments = [
     analogy: 'Ripples in a pond: the wave hits all nearest points before expanding further out.',
     algorithm: '1. Enqueue root. 2. Dequeue u, visit unvisited neighbors, Enqueue them.',
     quiz: [{ question: 'BFS finds which path in unweighted graphs?', options: ['Longest', 'Shortest', 'Random', 'Critical'], answer: 'Shortest' }]
+  },
+  {
+    id: 'exp-27',
+    number: 27,
+    title: 'Heap Sort',
+    aim: 'Implementing sorting by building a Max/Min Heap structure.',
+    theory: 'A comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort where we first find the maximum element and place the maximum element at the end.',
+    constraints: 'Complexity: O(N log N) for all cases.',
+    analogy: 'A tournament where the winner (max) always rises to the top, then is moved to the hall of fame while others compete again.',
+    algorithm: '1. Build Max Heap. 2. Swap max with last. 3. Heapify the root. 4. Reduce size and repeat.',
+    quiz: [{ question: 'Complexity of building a heap from an array?', options: ['O(1)', 'O(N)', 'O(log N)', 'O(N log N)'], answer: 'O(N)' }]
+  },
+  {
+    id: 'exp-28',
+    number: 28,
+    title: 'Job Scheduling with Deadlines',
+    aim: 'Maximizing profit by scheduling jobs before their respective deadlines.',
+    theory: 'A Greedy approach where jobs are sorted by profit and assigned to the latest possible free slot before their deadline.',
+    constraints: 'Greedy choice based on profit is optimal.',
+    analogy: 'Managing a busy schedule with different assignments: you pick the one that pays most and do it at the last possible minute to keep earlier slots free.',
+    algorithm: '1. Sort jobs by profit descending. 2. Find free slot <= deadline. 3. Assign job and mark slot.',
+    quiz: [{ question: 'Greedy parameter for Job Scheduling?', options: ['Deadline', 'Profit', 'Duration', 'Arrival Time'], answer: 'Profit' }]
+  },
+  {
+    id: 'exp-29',
+    number: 29,
+    title: 'Longest Common Subsequence (LCS)',
+    aim: 'Finding the longest sequence that appears in the same relative order in two strings.',
+    theory: 'A classic DP problem. If last chars match: 1 + LCS(prefix); else max(LCS with choice of skipping char).',
+    constraints: 'O(N * M) space and time.',
+    analogy: 'Comparing two different DNA strands to find the longest common genetic sequence.',
+    algorithm: '1. Table L[M+1][N+1]. 2. if s1[i]==s2[j] L[i][j]=1+L[i-1][j-1]. 3. else L[i][j]=max(L[i-1][j], L[i][j-1]).',
+    quiz: [{ question: 'Complexity of recursive LCS without memoization?', options: ['O(N)', 'O(N^2)', 'O(2^N)', 'O(N log N)'], answer: 'O(2^N)' }]
+  },
+  {
+    id: 'exp-30',
+    number: 30,
+    title: 'N-Queens Problem',
+    aim: 'Placing N chess queens on an NxN board so that no two queens threaten each other.',
+    theory: 'A Backtracking problem. Place a queen in a row and check for conflicts. If no solution possible, backtrack and try next column.',
+    constraints: 'N <= 12 for efficient execution.',
+    analogy: 'Placing hostile soldiers in a field where they can fire in straight or diagonal lines; each needs to be safely out of range of others.',
+    algorithm: '1. if row == N return true. 2. try columns 0 to N-1. 3. if safe, place and recurse. 4. if false, remove and backtrack.',
+    quiz: [{ question: 'Paradigms used for N-Queens?', options: ['Greedy', 'Divide & Conquer', 'Backtracking', 'Branch & Bound'], answer: 'Backtracking' }]
   }
 ];
